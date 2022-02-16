@@ -10,10 +10,8 @@ class users(models.Model):
     gmail = models.CharField(max_length=44)
     phone = models.CharField(max_length=15)
     password = models.CharField(max_length=15)
-
-
     def __str__(self):
-        return self
+        return self.name
 
 class links(models.Model):
     user = models.ForeignKey(users,on_delete=models.CASCADE)
@@ -27,3 +25,5 @@ class links(models.Model):
     Link8 = models.CharField(max_length=150)
     Link9 = models.CharField(max_length=150)
     Link10 = models.CharField(max_length=150)
+
+ 

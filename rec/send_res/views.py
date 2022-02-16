@@ -1,7 +1,9 @@
 from django.shortcuts import render
-
+from .models import users,links
 # Create your views here.
 
 
 def respond(request):
-    return render(request,"<h1>HOla</h1>")
+    data = users.objects.get(name = 'dakir')
+    link = links.objects.all()
+    return render(request,"responder/index.html",{'data':data,'links':link})

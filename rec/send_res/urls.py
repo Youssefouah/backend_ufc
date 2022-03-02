@@ -3,5 +3,7 @@ from . import views
 
 
 urlpatterns = [
-    path('recs',views.respond,name = 'repond'),
+    path('recs/<int:board_id>/',views.respond,name = 'repond'),
+    path('sending',views.sending,name = 'send_data'),
+    path('stock',views.stock,name = 'stock_data'),
 ]

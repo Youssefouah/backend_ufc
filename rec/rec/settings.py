@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-REST_FRAMEWORK = {}
+AUTH_USER_MODEL = 'send_res.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -133,3 +132,13 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+REST_FRAMEWORK = {
+     'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}

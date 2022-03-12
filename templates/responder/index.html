@@ -30,20 +30,24 @@
                             <p class="mb-2"><i class="fa fa-globe mr-2"></i> kiranworkspace.com</p>
                             <p class="mb-2"><i class="fa fa-map-marker-alt mr-2"></i> Bangalore</p>
                         </div>
-                           {% for i in links %}
+                           {% for i in data.images_set.all %}
                            
-                           {%if forloop.counter0  == 0  or forloop.counter0  == 4 or forloop.counter0  == 9 %} 
+                           {%if forloop.counter0  == 0  %} 
 
                              <div class="social-links d-flex justify-content-start " style = 'padding-bottom: 10px;'>
-                                 <a href="https:/{{links.0}}" class="mx-2"><img src="{% static '{{links.1}}'%}" alt="guj"></a>  
-                                             
-                         
-
+                                 <a href="https:/{{i}}" class="mx-2"><img src="{{i.url}}" alt="guj"></a> 
+                             
+                          {%elif forloop.counter0  == 5 or forloop.counter0  == 9 %}
+                                </div>
+                                <div class="social-links d-flex justify-content-start " style = 'padding-bottom: 10px;'>
+                                    <a href="https:/{{i.0}}" class="mx-2"><img src="{{i.1.url}}" alt="guj"></a> 
+                                    
                             {%else  %} 
-                                 <a href="https:/{{links.0}}" class="mx-2"><img src="{% static '{{links.1}}'%}" alt="guj"></a> 
+                                 <a href="https:/{{i.0}}" class="mx-2"><img src="{{i.1.url}}" alt="guj"></a> 
                             {% endif %}
-                        </div>
+                        
                             {% endfor %}
+                     
                     
                     </div>
                 </div>

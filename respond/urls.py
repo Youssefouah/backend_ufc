@@ -6,7 +6,8 @@ from django.urls import path
 urlpatterns = [
      path('page_main_view/<str:board_id>/',views.respond,name = 'repond'),
      #path('post',views.create_user), 
-     path('upgrade/<str:board_id>/',views.upd_add_del),
+     path('edit_profile/<int:id>/',views.edit_profile),
      path('Sign_up/',views.registration_view), 
      path('login/',views.login,name = "login"), 
+     path('forgot_password/',views.rest_password,name = "forgot_password"),
 ]

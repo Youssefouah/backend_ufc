@@ -15,6 +15,7 @@ class Users(models.Model):
     user= models.OneToOneField(User,on_delete=models.CASCADE,null = True,unique=True)
    # name = models.CharField(max_length=15)
     phone = models.CharField(max_length = 24,null = True,blank = True)
+    address = models.CharField(max_length = 100,null = True,blank = True)
     image = models.ImageField(upload_to = 'photos',null = True,blank = True)
     new_created = models.DateTimeField(auto_now_add=True, editable=False)
     time_close = models.DateTimeField(auto_now=True, editable=False)

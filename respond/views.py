@@ -2,7 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from django.contrib.auth import authenticate
-from .serializers import UsersSerialiser,LoginSerializer
+from yaml import serialize
+from .serializers import UsersSerialiser,LoginSerializer,forgot_rest_serializer,UserSerialiser,PutusersSerialiser
 from .models import Users
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, permission_classes
@@ -34,27 +35,44 @@ def respond(request,board_id):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 #@permission_classes([IsAuthenticated,])
-def upd_add_del(request,board_id):
+def edit_profile(request,id):
+    datas = {}
     try:
-        data_user = User.objects.get(username = board_id)
+        data_user = User.objects.get(id = id)
         data = data_user.users
+
     except data.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)     
 
     if request.method == 'GET':
         ser = UsersSerialiser(data)
-        return Response(ser.data)   
+        ser1 = UserSerialiser(data_user)
 
+        #data in table users
+        table_users = dict(ser.data)
+
+        #data_user in table user
+        table_user = dict(ser1.data)
+
+        #all data for user
+        table_all = table_users|table_user
+        return Response(table_all)   
+    
+    #edit data in table users("image ,adress,phone")
     if request.method == 'PUT':
-        ser = UsersSerialiser(data,data=request.data)
-        if ser.is_valid():
-            ser.save()
-            return Response(ser.data)
-        return Response(ser.errors,status=status.HTTP_400_BAD_REQUEST)   
+        serlizer = PutusersSerialiser(data,data=request.data)
 
+        if serlizer.is_valid(raise_exception=True):
+            serlizer.save()
+            datas["message"] = "edit data in table users"
+            return Response(datas,status=status.HTTP_201_CREATED)
+
+        return Response(serlizer.errors,status=status.HTTP_400_BAD_REQUEST)     
+
+    #delete data in table users
     if request.method == 'DELETE':
         data.delete()   
-    return Response(ser.data,status=status.HTTP_204_NO_CONTENT)        
+    return Response(ser1.data,status=status.HTTP_204_NO_CONTENT)        
 
 
 @api_view(['POST', ])
@@ -96,7 +114,7 @@ def login(request):
                 return Response(datas,status=status.HTTP_404_NOT_FOUND)
        
             if user == None:
-                 datas['response'] = "the username is not exist."
+                 datas['response'] = "the username is not exist"
                  return Response(datas,status=status.HTTP_400_BAD_REQUEST)
 
             else:
@@ -108,8 +126,57 @@ def login(request):
             
                  return Response(datas,status=status.HTTP_200_OK)
         else:
-            #datas['response'] = "the username or password is not correct. please try again"
-            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)                 
+            datas['response'] = "the username or password is not correct.please try again"
+            return Response(datas,status=status.HTTP_400_BAD_REQUEST)                 
+
+
+
+
+@api_view(['POST', ])
+def rest_password(request):
+
+    if request.method == 'POST':
+        serializer=forgot_rest_serializer(data=request.data)
+        datas={}
+
+    if serializer.is_valid(raise_exception=True):
+        serializer.save()
+        datas['data']='successfully registered'
+        print(datas)
+        return Response(datas)
+
+    return Response('failed retry after some time')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #class LoginAPI(KnoxLoginView):
  #   permission_classes = (permissions.AllowAny,)
   #  def post(self, request, format=None):

@@ -79,10 +79,18 @@ def login(request):
         serializer = LoginSerializer(data=request.data)
         datas = {}
         if serializer.is_valid():
+
             try:
-                email = User.objects.get(email=serializer.data['email'])
-                username =email.username
-                user = authenticate(username=username, password=serializer.data['password'])
+                #check if input is username or email 
+                if '@' in serializer.data['username']:
+                    email = User.objects.get(email=serializer.data['username'])
+                    username =email
+                    user = authenticate(username=username, password=serializer.data['password'])
+                else:
+                    #in I replace variable username by a variable email
+                    email = User.objects.get(username=serializer.data['username']) 
+                    user = authenticate(username=email, password=serializer.data['password'])
+
             except:
                 datas['response'] = "the username or password is incorrect"
                 return Response(datas,status=status.HTTP_404_NOT_FOUND)
@@ -100,8 +108,8 @@ def login(request):
             
                  return Response(datas,status=status.HTTP_200_OK)
         else:
-            datas['response'] = "the username or password is not correct. please try again"
-            return Response(datas,status=status.HTTP_400_BAD_REQUEST)                 
+            #datas['response'] = "the username or password is not correct. please try again"
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)                 
 #class LoginAPI(KnoxLoginView):
  #   permission_classes = (permissions.AllowAny,)
   #  def post(self, request, format=None):

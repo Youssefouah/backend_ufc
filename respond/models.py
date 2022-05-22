@@ -24,9 +24,9 @@ class Users_extend(models.Model):
 
 #table for urls every user has
 class Social_option(models.Model):
-    url = models.URLField()
-    color = models.CharField(max_length=40)
-    log = models.FileField(upload_to = 'logos')
+    url_web = models.URLField(blank = True)
+    color_log = models.CharField(max_length=100,null = True,blank = True)
+    log_svg = models.FileField(upload_to = 'logos',null = True,blank = True)
     def __str__(self):
         return str(self.url)
 

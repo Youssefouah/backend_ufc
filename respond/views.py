@@ -2,7 +2,7 @@ from email import message
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate
-from yaml import serialize
+#from yaml import serialize
 from .serializers import UsersSerialiser,LoginSerializer,forgot_rest_serializer,UserSerialiser,PutusersSerialiser,Sociallinkserialiser,Social_links_options
 from .models import Users_extend,Social_url,Social_option
 from django.contrib.auth.models import User

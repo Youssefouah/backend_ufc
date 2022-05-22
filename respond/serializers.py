@@ -1,14 +1,14 @@
 from dataclasses import field
 from unittest.util import _MAX_LENGTH
 from rest_framework import serializers
-from .models import Users
+from .models import *
 from django.contrib.auth.models import User
 
 
 
 class UsersSerialiser(serializers.ModelSerializer):
     class Meta:
-        model = Users
+        model = Users_extend
         fields = '__all__'
 
 class PutusersSerialiser(serializers.ModelSerializer):
@@ -20,7 +20,7 @@ class PutusersSerialiser(serializers.ModelSerializer):
 
 
 	class Meta:
-		model = Users
+		model = Users_extend
 		fields = ('user','username','email','address','phone')
 
 	def save(self):
@@ -31,7 +31,7 @@ class PutusersSerialiser(serializers.ModelSerializer):
 		phone=self.validated_data['phone']
 			#if your username is existing get the query of your specific username 
 		userd=User.objects.get(id=user)
-		userds = Users.objects.get(user=user)
+		userds = Users_extend.objects.get(user=user)
 			#then set the new username and email to the existing username
 		userd.username=username
 		userd.email=email
@@ -53,11 +53,10 @@ class UserSerialiser(serializers.ModelSerializer):
 
 class RegistrationSerializer(serializers.ModelSerializer):
 
-	password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
 
 	class Meta:
 		model = User
-		fields = ['email', 'username', 'password', 'password2']
+		fields = ['email', 'username', 'password']
 		extra_kwargs = {
 				'password': {'write_only': True},
 		}	
@@ -70,9 +69,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
 					username=self.validated_data['username']
 				)
 		password = self.validated_data['password']
-		password2 = self.validated_data['password2']
-		if password != password2:
-			raise serializers.ValidationError({'password': 'Passwords must match.'})
 		account.set_password(password)
 		account.save()
 		return account
@@ -111,6 +107,19 @@ class forgot_rest_serializer(serializers.ModelSerializer):
 			return user
 		else:
 			raise serializers.ValidationError({'error':'please enter valid crendentials'})	
+
+
+#table scocial_links:
+class Sociallinkserialiser(serializers.ModelSerializer):
+	class Meta:
+		model = Social_url
+		fields = '__all__'			
+
+#table cocial links options:
+class Social_links_options(serializers.ModelSerializer):
+	class Meta:
+		model = Social_option
+		fields = '__all__'			
 
 
 

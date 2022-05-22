@@ -11,7 +11,7 @@ from rest_framework.authtoken.models import Token
 
 
 #table for user
-class Users(models.Model):
+class Users_extend(models.Model):
     user= models.OneToOneField(User,on_delete=models.CASCADE,null = True,unique=True)
    # name = models.CharField(max_length=15)
     phone = models.CharField(max_length = 24,null = True,blank = True)
@@ -23,7 +23,7 @@ class Users(models.Model):
         return str(self.user)
 
 #table for urls every user has
-class Social_options(models.Model):
+class Social_option(models.Model):
     url = models.URLField()
     color = models.CharField(max_length=40)
     log = models.FileField(upload_to = 'logos')
@@ -31,10 +31,10 @@ class Social_options(models.Model):
         return str(self.url)
 
 #ids for users  and urls
-class Social_urls(models.Model):
-    user_id = models.ForeignKey(User,on_delete=models.CASCADE)
-    social_id = models.ForeignKey(Social_options,on_delete=models.CASCADE)
-    query_username = models.CharField(max_length = 15)
+class Social_url(models.Model):
+    user_id = models.OneToOneField(User,on_delete=models.CASCADE,null = True,unique=True)
+    social_id = models.OneToOneField(Social_option,on_delete=models.CASCADE,null = True,unique=True)
+    username_id = models.CharField(max_length = 15,blank=True,null=True)
     url = models.URLField()
     new_created = models.DateTimeField(auto_now_add=True, editable=False)
     new_update = models.DateTimeField(auto_now=True, editable=False)
@@ -46,7 +46,7 @@ class Social_urls(models.Model):
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Users.objects.create(user=instance)
+        Users_extend.objects.create(user=instance)
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):

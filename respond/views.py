@@ -3,8 +3,8 @@ from django.shortcuts import render
 
 from django.contrib.auth import authenticate
 from yaml import serialize
-from .serializers import UsersSerialiser,LoginSerializer,forgot_rest_serializer,UserSerialiser,PutusersSerialiser
-from .models import Users
+from .serializers import UsersSerialiser,LoginSerializer,forgot_rest_serializer,UserSerialiser,PutusersSerialiser,Sociallinkserialiser,Social_links_options
+from .models import Users_extend,Social_url,Social_option
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -22,27 +22,19 @@ def respond(request,board_id):
     return render(request,"responder/index.html",{'data':data})
 
 
-#@api_view(['POST'])
-#def create_user(request):
- #   if request.method == 'POST':
-  #      serializer = UsersSerialiser(data=request.data)
-   #     if serializer.is_valid():
-    #        serializer.save()
-     #   return Response(serializer.data,status=status.HTTP_201_CREATED)   
-    #return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)    
-
-
-
+# this function for GRUD profile
 @api_view(['GET', 'PUT', 'DELETE'])
 #@permission_classes([IsAuthenticated,])
 def edit_profile(request,id):
     datas = {}
     try:
+        #getting data this id
         data_user = User.objects.get(id = id)
         data = data_user.users
 
     except data.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)     
+    
 
     if request.method == 'GET':
         ser = UsersSerialiser(data)
@@ -149,6 +141,48 @@ def rest_password(request):
 
 
 
+
+@api_view(['PUT','GET' ])
+def addsocial_links(request,id):
+    try:
+        data = Social_url.objects.get(id = id)
+    except:
+        return Response("status.HTTP_404_NOT_FOUND")
+
+    if request.method == 'GET':
+        serializer=Sociallinkserialiser(data)
+        return Response(serializer.data)
+
+
+
+    if request.method == 'PUT':
+        serializer=Sociallinkserialiser(data,data=request.data)
+        datas={}
+        if serializer.is_valid():
+            serializer.save()
+            datas['data']='successfully registered'
+            print(datas)
+            return Response(datas)
+
+    return Response('failed retry after some time')
+
+
+
+@api_view(['GET', ])
+def getsocial_links(request):
+
+    try:
+        data = Social_option.objects.all()
+    except:
+        return Response("status.HTTP_404_NOT_FOUND")
+
+
+    if request.method == 'GET':
+        serializer=Social_links_options(data)
+        print(serializer.data)
+        return Response(serializer)
+
+    return Response('failed retry after some time')
 
 
 

@@ -1,5 +1,4 @@
 from dataclasses import field
-from httplib2 import Authentication
 from rest_framework import serializers
 from .models import Users
 from django.contrib.auth.models import User
@@ -44,4 +43,4 @@ class LoginSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = User
-		fields = ['email', 'password']	
+		fields ='email', 'password'

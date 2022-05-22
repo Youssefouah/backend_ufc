@@ -77,18 +77,31 @@ def registration_view(request):
 def login(request):
     if request.method == 'POST':
         serializer = LoginSerializer(data=request.data)
+        datas = {}
         if serializer.is_valid():
-            data = User.objects.get(email=serializer.data['email'])
-            username =data.username
-            user = authenticate(username=username, password=serializer.data['password'])
-        if user == None:
-            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            try:
+                email = User.objects.get(email=serializer.data['email'])
+                username =email.username
+                user = authenticate(username=username, password=serializer.data['password'])
+            except:
+                datas['response'] = "the username or password is incorrect"
+                return Response(datas,status=status.HTTP_404_NOT_FOUND)
+       
+            if user == None:
+                 datas['response'] = "the username is not exist."
+                 return Response(datas,status=status.HTTP_400_BAD_REQUEST)
 
+            else:
+                 token = Token.objects.get(user_id= email.id).key
+                 datas['token'] = token
+                 datas['email'] = email.email
+                 datas['username'] = email.username
+                 datas['user_id'] = str(email.id)
+            
+                 return Response(datas,status=status.HTTP_200_OK)
         else:
-            token = Token.objects.get(user_id= data.id).key
-            print(token)
-            return Response(token,status=status.HTTP_200_OK)
-
+            datas['response'] = "the username or password is not correct. please try again"
+            return Response(datas,status=status.HTTP_400_BAD_REQUEST)                 
 #class LoginAPI(KnoxLoginView):
  #   permission_classes = (permissions.AllowAny,)
   #  def post(self, request, format=None):
@@ -98,5 +111,13 @@ def login(request):
       #  login(request, user)
        # return super(LoginAPI, self).post(request, format=None)
 
+"""
 
+            token = Token.objects.get(user_id= data.id).key
+            datas['token'] = token
+            datas['email'] = email
+            datas['username'] = username
+            datas['user_id'] = str(data.id)
+            return Response(data,status=status.HTTP_200_OK)
+"""
 

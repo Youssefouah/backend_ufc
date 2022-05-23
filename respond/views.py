@@ -75,13 +75,13 @@ def registration_view(request):
         data = {}
         if serializer.is_valid():
             account = serializer.save()
-            data['response'] = "Token.objects.create(account)."
+        #    data['response'] = "Token.objects.create(account)."
             data['email'] = account.email
             data['username'] = account.username
             token = Token.objects.get(user=account).key
             data['token'] = token
         else:
-            data = serializer.errors
+            data = message["the username or the email is already exist"]
         return Response(data)
 
 

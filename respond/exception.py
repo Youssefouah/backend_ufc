@@ -15,8 +15,7 @@ class expression_errors():
         self.message ["the username or password is incorrect"] = 3
         self.message["the username is not exist"] = 4
         self.message ["the username or password is not correct.please try again"] = 5
-        self.message ["the username is already exist"] = 6
-        self.message["the email is already exist"] = 7
+        self.message ["the username or the email is already exist"] = 6
         self.message["the email is not exist"] = 8
         self.message ["the email is not correct"] = 9
         self.message ["the password is not correct"] = 10

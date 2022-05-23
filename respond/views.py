@@ -91,30 +91,18 @@ def login(request):
         serializer = LoginSerializer(data=request.data)
         datas = {}
         if serializer.is_valid():
-
-            try:
-                #check if input is username or email 
-                if '@' in serializer.data['username']:
-                    email = User.objects.get(email=serializer.data['username'])
-                    username =email
-                    user = authenticate(username=username, password=serializer.data['password'])
-                else:
-                    #in I replace variable username by a variable email
-                    email = User.objects.get(username=serializer.data['username']) 
-                    user = authenticate(username=email, password=serializer.data['password'])
-
-            except:
-                return Response(message["your input is not confirm"])
-       
+            username = User.objects.get(username=serializer.data['username']) 
+            user = authenticate(username=username, password=serializer.data['password'])
+                   
             if user == None:
                  return Response(message["the username or password is incorrect"])
 
             else:
-                 token = Token.objects.get(user_id= email.id).key
+                 token = Token.objects.get(user_id= user.id).key
                  datas['token'] = token
-                 datas['email'] = email.email
-                 datas['username'] = email.username
-                 datas['user_id'] = str(email.id)
+                 datas['email'] = user.email
+                 datas['username'] = user.username
+                 datas['user_id'] = str(user.id)
             
                  return Response(datas,status=status.HTTP_200_OK)
         else:

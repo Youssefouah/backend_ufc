@@ -28,14 +28,14 @@ class Social_option(models.Model):
     color_log = models.CharField(max_length=100,null = True,blank = True)
     log_svg = models.FileField(upload_to = 'logos',null = True,blank = True)
     def __str__(self):
-        return str(self.url)
+        return str(self.url_web)
 
 #ids for users  and urls
 class Social_url(models.Model):
     user_id = models.OneToOneField(User,on_delete=models.CASCADE,null = True,unique=True)
     social_id = models.OneToOneField(Social_option,on_delete=models.CASCADE,null = True)
     username_id = models.CharField(max_length = 15,blank=True,null=True)
-    url = models.URLField()
+    url_socials = models.URLField()
     new_created = models.DateTimeField(auto_now_add=True, editable=False)
     new_update = models.DateTimeField(auto_now=True, editable=False)
     numbers_clicks = models.IntegerField(default = 0)

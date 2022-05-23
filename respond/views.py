@@ -34,8 +34,8 @@ def edit_profile(request,id):
         data_user = User.objects.get(id = id)
         data = data_user.users_extend
 
-    except data.DoesNotExist:
-        return Response(message["user not found"],)     
+    except :
+        return Response(message["user not found"],status=status.HTTP_404_NOT_FOUND)   
     
 
     if request.method == 'GET':
@@ -64,7 +64,8 @@ def edit_profile(request,id):
 
     #delete data in table users
     if request.method == 'DELETE':
-        data_user.delete()   
+        data_user.delete()  
+        data.delete() 
     return Response(message["delete data in table users"])      
 
 
@@ -160,6 +161,11 @@ def addsocial_links(request,id):
         if serializer.is_valid():
             serializer.save()
             return Response(message['successfully registered'])
+
+    #delete data in table links
+    if request.method == 'DELETE':
+        data.delete()   
+
 
     return Response(message["this opertion is failed"])
 

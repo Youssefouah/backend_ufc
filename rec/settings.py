@@ -30,6 +30,9 @@ ALLOWED_HOSTS = ["127.0.0.1:8000", "localhost",'http://142.93.141.158:8080/','12
 
 
 
+
+
+
 # Application definition
 
 INSTALLED_APPS = [

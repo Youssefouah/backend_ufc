@@ -33,7 +33,7 @@ class Social_option(models.Model):
 #ids for users  and urls
 class Social_url(models.Model):
     user_id = models.OneToOneField(User,on_delete=models.CASCADE,null = True,unique=True)
-    social_id = models.OneToOneField(Social_option,on_delete=models.CASCADE,null = True,unique=True)
+    social_id = models.OneToOneField(Social_option,on_delete=models.CASCADE,null = True)
     username_id = models.CharField(max_length = 15,blank=True,null=True)
     url = models.URLField()
     new_created = models.DateTimeField(auto_now_add=True, editable=False)

@@ -16,7 +16,8 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import check_password
 from .exception import expression_errors
 
-message = expression_errors()
+message_expression = expression_errors()
+message = message_expression.exprission_error()
 
 def respond(request,board_id):
     data = User.objects.get(username = board_id)
@@ -104,7 +105,7 @@ def login(request):
                     user = authenticate(username=email, password=serializer.data['password'])
 
             except:
-                return Response(message["your input is not confirm"])
+                return Response(message["the username or password is incorrect"])
        
             if user == None:
                  return Response(message["the username or password is incorrect"])

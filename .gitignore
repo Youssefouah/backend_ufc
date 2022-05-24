@@ -1,3 +1,4 @@
+__pycache__/
 .db.sqlite3
 rec/__pycache__/wsgi.cpython-310.pyc
 respond/__pycache__/__init__.cpython-310.pyc

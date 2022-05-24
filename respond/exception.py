@@ -16,6 +16,7 @@ class expression_errors():
         self.message["the username is not exist"] = 4
         self.message ["the username or password is not correct.please try again"] = 5
         self.message ["the username or the email is already exist"] = 6
+        self.message ["user registered successfully"] = 7
         self.message["the email is not exist"] = 8
         self.message ["the email is not correct"] = 9
         self.message ["the password is not correct"] = 10
@@ -24,5 +25,6 @@ class expression_errors():
         self.message ["delete data in table users"] = 13
         self.message ["status.HTTP_404_NOT_FOUND"] = 14
         self.message ["this opertion is failed"] = 15
+        self.message ["the change is successfully"] = 16
 
         return self.message

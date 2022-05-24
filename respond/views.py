@@ -2,18 +2,16 @@ from email import message
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate
-#from yaml import serialize
-from .serializers import UsersSerialiser,LoginSerializer,forgot_rest_serializer,UserSerialiser,PutusersSerialiser,Sociallinkserialiser,Social_links_options
+from .serializers import UsersSerialiser,LoginSerializer,forgot_rest_serializer,UserSerialiser,PutusersSerialiser,Sociallinkserialiser,Social_links_options,rest_serializer,rest_serializer_2
 from .models import Users_extend,Social_url,Social_option
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status,filters
+from rest_framework import status
 # Create your views here.
 from .serializers import RegistrationSerializer
 from rest_framework.authtoken.models import Token
-from django.contrib.auth.hashers import check_password
 from .exception import expression_errors
 
 message_expression = expression_errors()
@@ -35,7 +33,7 @@ def edit_profile(request,id):
         data = data_user.users_extend
 
     except :
-        return Response(message["user not found"],status=status.HTTP_404_NOT_FOUND)   
+        return Response(status=status.HTTP_404_NOT_FOUND)   
     
 
     if request.method == 'GET':
@@ -58,15 +56,15 @@ def edit_profile(request,id):
 
         if serlizer.is_valid(raise_exception=True):
             serlizer.save()
-            return Response(message["edit data in table users"])
+            return Response(status=status.HTTP_200_OK)
 
-        return Response(message["your input is not confirm"])     
+        return Response(status=status.HTTP_406_NOT_ACCEPTABLE)     
 
     #delete data in table users
     if request.method == 'DELETE':
         data_user.delete()  
         data.delete() 
-    return Response(message["delete data in table users"])      
+    return Response(status=status.HTTP_304_NOT_MODIFIED)      
 
 
 @api_view(['POST', ])
@@ -76,14 +74,15 @@ def registration_view(request):
         data = {}
         if serializer.is_valid():
             account = serializer.save()
-        #    data['response'] = "Token.objects.create(account)."
+            #data['response'] = message["user registered successfully"]
             data['email'] = account.email
             data['username'] = account.username
             token = Token.objects.get(user=account).key
             data['token'] = token
         else:
-            data = message["the username or the email is already exist"]
-        return Response(data)
+           #data = message["the username or the email is already exist"]
+           return Response(status=status.HTTP_208_ALREADY_REPORTED)
+        return Response(data,status=status.HTTP_201_CREATED)
 
 
 #this function for login
@@ -92,6 +91,7 @@ def login(request):
     if request.method == 'POST':
         serializer = LoginSerializer(data=request.data)
         datas = {}
+
         if serializer.is_valid():
 
             try:
@@ -106,10 +106,10 @@ def login(request):
                     user = authenticate(username=email, password=serializer.data['password'])
 
             except:
-                return Response(message["the username or password is incorrect"])
+                return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
        
             if user == None:
-                 return Response(message["the username or password is incorrect"])
+                 return Response(status=status.HTTP_404_NOT_FOUND)
 
             else:
                  token = Token.objects.get(user_id= email.id).key
@@ -120,27 +120,47 @@ def login(request):
             
                  return Response(datas,status=status.HTTP_200_OK)
         else:
-            return Response(message["the username or password is not correct.please try again"])                 
+            return Response(status=status.HTTP_204_NO_CONTENT)                 
 
 
+
+
+@api_view(['PUT', ])
+def change_password(request):
+
+    if request.method == 'PUT':
+        serializer=forgot_rest_serializer(data=request.data)
+
+    if serializer.is_valid():
+        msg = serializer.save()
+        return msg
+
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['POST', ])
 def rest_password(request):
-
     if request.method == 'POST':
-        serializer=forgot_rest_serializer(data=request.data)
-        datas={}
+        serializer = rest_serializer(data=request.data)
+        data = {}
+        if serializer.is_valid():
+            code = serializer.sending()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_208_ALREADY_REPORTED)
 
-    if serializer.is_valid(raise_exception=True):
-        serializer.save()
-        datas['data']='successfully registered'
-        print(datas)
-        return Response(datas)
-
-    return Response('failed retry after some time')
-
-
+@api_view(['POST', ])
+def rest_password_code(request):
+    if request.method == 'POST':
+        serializer = rest_serializer_2(data=request.data)
+        data = {}
+        if serializer.is_valid():
+            code = serializer.code_sending()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_208_ALREADY_REPORTED)            
+        
+            
 
 
 @api_view(['PUT','GET' ])
@@ -148,11 +168,11 @@ def addsocial_links(request,id):
     try:
         data = Social_url.objects.get(id = id)
     except:
-        return Response(message["user not found"])
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     if request.method == 'GET':
         serializer=Sociallinkserialiser(data)
-        return Response(serializer.data)
+        return Response(serializer.data,status=status.HTTP_200_OK)
 
 
 
@@ -160,31 +180,31 @@ def addsocial_links(request,id):
         serializer=Sociallinkserialiser(data,data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(message['successfully registered'])
+            return Response(status=status.HTTP_Modified_204)
 
     #delete data in table links
     if request.method == 'DELETE':
         data.delete()   
 
 
-    return Response(message["this opertion is failed"])
+    return Response(status=status.HTTP_417_EXPECTATION_FAILED)
 
 
-
+#table social_option
 @api_view(['GET', ])
 def getsocial_links(request):
 
     try:
         data = Social_option.objects.all()
     except:
-        return Response(message["status.HTTP_404_NOT_FOUND"])
+        return Response(status.HTTP_404_NOT_FOUND)
 
 
     if request.method == 'GET':
         serializer=Social_links_options(data)
         return Response(serializer.data)
 
-    return Response(message["this opertion is failed"])
+    return Response(status=status.HTTP_417_EXPECTATION_FAILED)
 
 
 
@@ -231,14 +251,4 @@ def getsocial_links(request):
      #   user = serializer.validated_data['user']
       #  login(request, user)
        # return super(LoginAPI, self).post(request, format=None)
-
-"""
-
-            token = Token.objects.get(user_id= data.id).key
-            datas['token'] = token
-            datas['email'] = email
-            datas['username'] = username
-            datas['user_id'] = str(data.id)
-            return Response(data,status=status.HTTP_200_OK)
-"""
 

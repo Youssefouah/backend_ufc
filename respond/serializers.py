@@ -2,8 +2,17 @@ from dataclasses import field
 from unittest.util import _MAX_LENGTH
 from rest_framework import serializers
 from .models import *
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from rest_framework.response import Response
+from rest_framework import status
+from django.core.mail import send_mail  
+#from django.contrib.auth.hashers import check_password
+from .exception import expression_errors
+import random
 
+message_expression = expression_errors()
+message = message_expression.exprission_error()
 
 
 class UsersSerialiser(serializers.ModelSerializer):
@@ -85,28 +94,82 @@ class LoginSerializer(serializers.ModelSerializer):
 
 class forgot_rest_serializer(serializers.ModelSerializer):
 	username=serializers.CharField(max_length=100)
-	password=serializers.CharField(max_length=100)
+	new_password=serializers.CharField(max_length=100)
+	old_password=serializers.CharField(max_length=100)
 
 	class Meta:
 		model = User
-		fields = '__all__'
+		fields = ['username','new_password','old_password']
 
 	def save(self):
-		password=self.validated_data['password']
+		new_password=self.validated_data['new_password']
+		old_password=self.validated_data['old_password']
 		username=self.validated_data['username']
-
 		 #filtering out whethere username is existing or not, if your username is existing then if condition will allow your username
-		if User.objects.filter(username=username).exists():
+		
+		if '@' in username:
+			try:
+				if User.objects.filter(email=username).exists():
+					username = User.objects.get(email=username).username	
+					#print(username)
+					if authenticate(username=username, password= old_password):
+						user=User.objects.get(username=username)
+						user.set_password(new_password)
+						user.save()
+						return Response(status=status.HTTP_200_OK)
+					else:
+						return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+				else:
+					return Response(status=status.HTTP_404_NOT_FOUND)		
+			except:
+				return Response(status=status.HTTP_404_NOT_FOUND)			
 
-			#if your username is existing get the query of your specific username 
-			user=User.objects.get(username=username)
+	
+		elif User.objects.filter(username=username).exists() :
+			#print(username)
+			if authenticate(username=username, password= old_password):
+				user=User.objects.get(username=username)
+				user.set_password(new_password)
+				user.save()
+				return Response(status=status.HTTP_200_OK)
+			else :
+				return Response(status=status.HTTP_304_NOT_MODIFIED)	
 
-			#then set the new password for your username
-			user.set_password(password)
-			user.save()
-			return user
 		else:
-			raise serializers.ValidationError({'error':'please enter valid crendentials'})	
+			return Response(status=status.HTTP_404_NOT_FOUND)
+
+#rest password serializer by email
+class rest_serializer(serializers.ModelSerializer):
+	email=serializers.CharField(max_length=100)
+	class Meta:
+		model = User
+		fields = ['email']
+    
+	def sending(self):
+		email=self.validated_data['email']
+		number = random.randint(1000,9999)
+		send_mail(
+            'rest password', 
+            'this is code : {}'.format(number), 
+            'youssefouah1997@gmail.com', 
+            [
+                email, 
+            ]
+        ) 
+		return number
+
+class rest_serializer_2(serializers.ModelSerializer):
+	code=serializers.CharField(max_length=100)
+	class Meta:
+		model = User
+		fields = ['code']
+		
+	def validation(self):
+		code=self.validated_data['code']
+		if code == self.sending():
+			return Response(status=status.HTTP_200_OK)
+		else:
+			return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 #table scocial_links:

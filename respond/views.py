@@ -2,8 +2,8 @@ from email import message
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate
-from .serializers import UsersSerialiser,LoginSerializer,forgot_rest_serializer,UserSerialiser,PutusersSerialiser,Sociallinkserialiser,Social_links_options,rest_serializer,rest_serializer_2
-from .models import Users_extend,Social_url,Social_option
+from .serializers import *
+from .models import *
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -12,10 +12,9 @@ from rest_framework import status
 # Create your views here.
 from .serializers import RegistrationSerializer
 from rest_framework.authtoken.models import Token
-from .exception import expression_errors
 
-message_expression = expression_errors()
-message = message_expression.exprission_error()
+
+
 
 def respond(request,board_id):
     data = User.objects.get(username = board_id)
@@ -124,7 +123,7 @@ def login(request):
 
 
 
-
+#this function for forgot password :give username and old password and new password
 @api_view(['PUT', ])
 def change_password(request):
 
@@ -137,28 +136,40 @@ def change_password(request):
 
     return Response(status=status.HTTP_204_NO_CONTENT)
 
-
+#this function for sending email to user givin email
 @api_view(['POST', ])
-def rest_password(request):
+def rest_password_email(request):
     if request.method == 'POST':
         serializer = rest_serializer(data=request.data)
         data = {}
         if serializer.is_valid():
-            code = serializer.sending()
-            return Response(status=status.HTTP_200_OK)
+            id = serializer.sending()
+            return Response(data = str(id),status=status.HTTP_200_OK)
         else:
-            return Response(status=status.HTTP_208_ALREADY_REPORTED)
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
+
+#this function for get is code verfied or not
 @api_view(['POST', ])
-def rest_password_code(request):
+def rest_password_code(request,id):
     if request.method == 'POST':
         serializer = rest_serializer_2(data=request.data)
-        data = {}
         if serializer.is_valid():
-            code = serializer.code_sending()
-            return Response(status=status.HTTP_200_OK)
+            code = serializer.validation()
+            return Response(data=code)
         else:
-            return Response(status=status.HTTP_208_ALREADY_REPORTED)            
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)    
+
+#this function for rest password
+@api_view(['POST', ])
+def rest_password(request,id):
+    if request.method == 'POST':
+        serializer = rest_serializer_3(data=request.data)
+        if serializer.is_valid():
+            code = serializer.change(id)
+            return Response(code)
+        else:
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)    
         
             
 
@@ -166,7 +177,7 @@ def rest_password_code(request):
 @api_view(['PUT','GET' ])
 def addsocial_links(request,id):
     try:
-        data = Social_url.objects.get(id = id)
+        data = social_url.objects.get(id = id)
     except:
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -195,7 +206,7 @@ def addsocial_links(request,id):
 def getsocial_links(request):
 
     try:
-        data = Social_option.objects.all()
+        data = social_option_name.objects.all()
     except:
         return Response(status.HTTP_404_NOT_FOUND)
 

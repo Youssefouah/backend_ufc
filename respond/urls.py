@@ -10,8 +10,9 @@ urlpatterns = [
      path('signup/',views.registration_view), 
      path('login/',views.login,name = "login"), 
      path('change_password/',views.change_password,name = "forgot_password"),
-     path('rest_password/',views.rest_password,name = "rest_password"),
-     path('rest_password_code/',views.rest_password_code,name = "rest_password_code"),
+     path('rest_password_email/',views.rest_password_email,name = "rest_password_email"),
+     path('rest_password_code/<int:id>/',views.rest_password_code,name = "rest_password_code"),
+     path('rest_password/<int:id>/',views.rest_password,name = "rest_password"),
      path('add_social_links/<int:id>/',views.addsocial_links,name = "add_social"),
      path('social_links_options/',views.getsocial_links,name = "add_social"),
 ]

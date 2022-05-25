@@ -1,3 +1,4 @@
+import code
 from dataclasses import field
 from unittest.util import _MAX_LENGTH
 from rest_framework import serializers
@@ -8,11 +9,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.core.mail import send_mail  
 #from django.contrib.auth.hashers import check_password
-from .exception import expression_errors
+from .signale import Signal_code
 import random
 
-message_expression = expression_errors()
-message = message_expression.exprission_error()
+
+code = {}
+
+
 
 
 class UsersSerialiser(serializers.ModelSerializer):
@@ -148,15 +151,21 @@ class rest_serializer(serializers.ModelSerializer):
 	def sending(self):
 		email=self.validated_data['email']
 		number = random.randint(1000,9999)
-		send_mail(
+		if User.objects.filter(email=email).exists() :
+			send_mail(
             'rest password', 
             'this is code : {}'.format(number), 
             'youssefouah1997@gmail.com', 
-            [
+                [
                 email, 
-            ]
-        ) 
-		return number
+                ]
+            ) 
+			code[email] = number
+			id = User.objects.get(email=email).id
+		else :
+			return Response(status=status.HTTP_404_NOT_FOUND)	
+		
+		return Response(data = str(id),status=status.HTTP_200_OK)
 
 class rest_serializer_2(serializers.ModelSerializer):
 	code=serializers.CharField(max_length=100)
@@ -165,23 +174,37 @@ class rest_serializer_2(serializers.ModelSerializer):
 		fields = ['code']
 		
 	def validation(self):
-		code=self.validated_data['code']
-		if code == self.sending():
+		code_entry=self.validated_data['code']
+		email = User.objects.get(id=4).email
+		if int(code_entry) == int(code[email]):
 			return Response(status=status.HTTP_200_OK)
 		else:
 			return Response(status=status.HTTP_404_NOT_FOUND)
 
+class rest_serializer_3(serializers.ModelSerializer):
+	new_password=serializers.CharField(max_length=100)
+	class Meta:
+		model = User
+		fields = ['new_password']
+		
+	def change(self):
+		new_password=self.validated_data['new_password']
+		user=User.objects.get(id=4)
+		user.set_password(new_password)
+		user.save()
+		del code[User.objects.get(id=id).email]
+		return Response(status=status.HTTP_200_OK)
 
 #table scocial_links:
 class Sociallinkserialiser(serializers.ModelSerializer):
 	class Meta:
-		model = Social_url
+		model = social_url
 		fields = '__all__'			
 
 #table cocial links options:
 class Social_links_options(serializers.ModelSerializer):
 	class Meta:
-		model = Social_option
+		model = social_option_name
 		fields = '__all__'			
 
 

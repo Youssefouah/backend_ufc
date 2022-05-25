@@ -32,7 +32,7 @@ class social_option_name(models.Model):
     log_svg = models.FileField(upload_to = 'logos',null = True,blank = True)
     log_svg_url = models.CharField(max_length=100,null = True,blank = True)
     def __str__(self):
-        return str(self.sponame)
+        return str(self.url_web)
 
 #ids for users  and urls
 class social_url(models.Model):

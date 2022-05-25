@@ -1,7 +1,7 @@
 from distutils.command.upload import upload
 from email.policy import default
 import numbers
-from turtle import update
+#from turtle import update
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User

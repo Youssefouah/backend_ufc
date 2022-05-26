@@ -1,4 +1,5 @@
 import code
+import codecs
 from dataclasses import field
 from unittest.util import _MAX_LENGTH
 from rest_framework import serializers
@@ -13,7 +14,9 @@ from .signale import Signal_code
 import random
 
 
-code = {}
+codes = Signal_code()
+code = codes.code_signal()
+
 
 
 
@@ -162,6 +165,7 @@ class rest_serializer(serializers.ModelSerializer):
             ) 
 			code[email] = number
 			id = User.objects.get(email=email).id
+			print(code)
 		else :
 			return Response(status=status.HTTP_404_NOT_FOUND)	
 		
@@ -174,6 +178,7 @@ class rest_serializer_2(serializers.ModelSerializer):
 		fields = ['code']
 		
 	def validation(self):
+		print(code)
 		code_entry=self.validated_data['code']
 		email = User.objects.get(id=4).email
 		if int(code_entry) == int(code[email]):
@@ -198,15 +203,14 @@ class rest_serializer_3(serializers.ModelSerializer):
 #table scocial_links:
 class Sociallinkserialiser(serializers.ModelSerializer):
 	class Meta:
-		model = social_url
+		model = urlOption
 		fields = '__all__'			
 
 #table cocial links options:
 class Social_links_options(serializers.ModelSerializer):
 	class Meta:
-		model = social_option_name
+		model = social_profile
 		fields = '__all__'			
-
 
 
 

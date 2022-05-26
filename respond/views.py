@@ -18,7 +18,7 @@ from rest_framework.authtoken.models import Token
 
 def respond(request,board_id):
     data = User.objects.get(username = board_id)
-    print(data.users.phone)
+    print(data.users_extend.phone)
     return render(request,"responder/index.html",{'data':data})
 
 
@@ -29,7 +29,7 @@ def edit_profile(request,id):
     try:
         #getting data this id
         data_user = User.objects.get(id = id)
-        data = data_user.users_extend
+        data = data_user.users_extended
 
     except :
         return Response(status=status.HTTP_404_NOT_FOUND)   
@@ -111,11 +111,11 @@ def login(request):
                  return Response(status=status.HTTP_404_NOT_FOUND)
 
             else:
-                 token = Token.objects.get(user_id= email.id).key
+                 token = Token.objects.get(id= email.id).key
                  datas['token'] = token
                  datas['email'] = email.email
                  datas['username'] = email.username
-                 datas['user_id'] = str(email.id)
+                 datas['id'] = str(email.id)
             
                  return Response(datas,status=status.HTTP_200_OK)
         else:
@@ -144,7 +144,7 @@ def rest_password_email(request):
         data = {}
         if serializer.is_valid():
             id = serializer.sending()
-            return Response(data = str(id),status=status.HTTP_200_OK)
+            return Response(data = str(id))
         else:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
@@ -177,7 +177,7 @@ def rest_password(request,id):
 @api_view(['PUT','GET' ])
 def addsocial_links(request,id):
     try:
-        data = social_url.objects.get(id = id)
+        data = social_profile.objects.get(id = id)
     except:
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -206,7 +206,7 @@ def addsocial_links(request,id):
 def getsocial_links(request):
 
     try:
-        data = social_option_name.objects.all()
+        data = urlOption.objects.all()
     except:
         return Response(status.HTTP_404_NOT_FOUND)
 

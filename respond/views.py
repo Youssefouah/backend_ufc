@@ -88,7 +88,7 @@ def registration_view(request):
 
 #function for return db inside social_profile
 def get_social_profile(name_data):
-    datass = {}
+    datass = []
     n=0
     try:
         data = social_profile.objects.all().filter(userurl_id=name_data)
@@ -98,35 +98,22 @@ def get_social_profile(name_data):
             print(i.id)
             datas['id'] = str(i.id)
             datas['urlOptionId'] = str(i.urlOptionId)
-            datas[str(i.urlOptionId)] = get_url_option(str(i.urlOptionId))
+            
             datas['socialProfileUsername '] = str(i.socialProfileUsername)
             datas['user_id'] = str(i.userurl_id)
-            datass["urls_social"+str(n)] = datas
-            n=n+1
+            data_url = urlOption.objects.all().filter(id=str(i.urlOptionId))
+            for j in data_url:
+                datas['urlOptionName'] = str(j.urlOptionName)
+                datas['urlOptionUrl'] = str(j.urlOptionUrl)
+                datas['urlOptionColor'] = str(j.urlOptionColor)
+                datas['svg_logo'] = str(j.svg_logo)
+                datas['logo_url'] = str(j.logo_url)
+            datass.append(datas)
         return datass
     except:
         return None
 
-#function for return db inside urlOption
-def get_url_option(name_data):
-    datass = {}
-    n=0
-    try:
-        data = urlOption.objects.all().filter(id=name_data)
-        print(data)
-        for i in data:
-            datas = {}
-            datas['id'] = str(i.id)
-            datas['urlOptionName'] = str(i.urlOptionName)
-            datas['urlOptionUrl'] = str(i.urlOptionUrl)
-            datas['urlOptionColor'] = str(i.urlOptionColor)
-            datass['svg_logo'] = str(i.svg_logo)
-            datass['logo_url'] = str(i.logo_url)
-            datass["urls_option"+str(n)] = datas
-            n=n+1
-        return datass
-    except:
-        return None
+
 
 #this function for login
 #return {"token":token,"username":username,"email":email,"id":id,}
@@ -172,7 +159,7 @@ def login(request):
                  datas['address'] = data.address
                  datas['created_at'] = data.created_At
                  datas['updated_at'] = data.updated_At
-                 datas['urls'] = datas_urls
+                 datas['url_profiles'] = datas_urls
 
                  return Response(datas,status=status.HTTP_200_OK)
         else:

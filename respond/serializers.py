@@ -20,8 +20,8 @@ code = {}
 
 class UsersSerialiser(serializers.ModelSerializer):
     class Meta:
-        model = Users_extend
-        fields = '__all__'
+        model = Users_extended
+        fields = ('id','job','address','phone','created_At','updated_At')
 
 class PutusersSerialiser(serializers.ModelSerializer):
 	username=serializers.CharField(max_length=100)
@@ -32,7 +32,7 @@ class PutusersSerialiser(serializers.ModelSerializer):
 
 
 	class Meta:
-		model = Users_extend
+		model = Users_extended
 		fields = ('user','username','email','address','phone')
 
 	def save(self):
@@ -43,7 +43,7 @@ class PutusersSerialiser(serializers.ModelSerializer):
 		phone=self.validated_data['phone']
 			#if your username is existing get the query of your specific username 
 		userd=User.objects.get(id=user)
-		userds = Users_extend.objects.get(user=user)
+		userds = Users_extended.objects.get(user=user)
 			#then set the new username and email to the existing username
 		userd.username=username
 		userd.email=email
@@ -198,13 +198,13 @@ class rest_serializer_3(serializers.ModelSerializer):
 #table scocial_links:
 class Sociallinkserialiser(serializers.ModelSerializer):
 	class Meta:
-		model = social_url
+		model = urlOption
 		fields = '__all__'			
 
 #table cocial links options:
 class Social_links_options(serializers.ModelSerializer):
 	class Meta:
-		model = social_option_name
+		model = social_profile
 		fields = '__all__'			
 
 

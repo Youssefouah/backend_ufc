@@ -18,7 +18,7 @@ from rest_framework.authtoken.models import Token
 
 def respond(request,board_id):
     data = User.objects.get(username = board_id)
-    print(data.users.phone)
+    print(data.users.extended.phone)
     return render(request,"responder/index.html",{'data':data})
 
 
@@ -28,8 +28,9 @@ def respond(request,board_id):
 def edit_profile(request,id):
     try:
         #getting data this id
-        data_user = User.objects.get(id = id)
-        data = data_user.users_extend
+        id_hash = Users_extended.objects.get(id=id).user_id
+        data_user = User.objects.get(username = id_hash)
+        data = data_user.users_extended
 
     except :
         return Response(status=status.HTTP_404_NOT_FOUND)   
@@ -85,12 +86,13 @@ def registration_view(request):
 
 
 #this function for login
+#return {"token":token,"username":username,"email":email,"id":id,}
 @api_view(['POST', ])
 def login(request):
     if request.method == 'POST':
         serializer = LoginSerializer(data=request.data)
         datas = {}
-
+        datas_urls = {}
         if serializer.is_valid():
 
             try:
@@ -98,10 +100,21 @@ def login(request):
                 if '@' in serializer.data['username']:
                     email = User.objects.get(email=serializer.data['username'])
                     username =email
+                    data = email.users_extended
+                    #userdata_urls.objects.filter(userurl_id = username).all()
                     user = authenticate(username=username, password=serializer.data['password'])
                 else:
                     #in I replace variable username by a variable email
                     email = User.objects.get(username=serializer.data['username']) 
+                    data = email.users_extended
+                    print(email)
+                    userdata_urls = social_profile.objects.filter(userurl_id = email)
+                    print(userdata_urls.values('userurl_id').all())
+                    for q in userdata_urls:
+                        for key, value in q.items():
+                            datas[key] = value
+                    print(datas)
+                    #userdata_urles = userdata_urls.objects.filter(userurl_id = username)
                     user = authenticate(username=email, password=serializer.data['password'])
 
             except:
@@ -115,8 +128,14 @@ def login(request):
                  datas['token'] = token
                  datas['email'] = email.email
                  datas['username'] = email.username
-                 datas['user_id'] = str(email.id)
-            
+                 datas['id'] = data.id
+                 datas['job'] = data.job
+                 datas['phone'] = data.phone
+                 datas['address'] = data.address
+                 datas['created_at'] = data.created_At
+                 datas['updated_at'] = data.updated_At
+
+
                  return Response(datas,status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_204_NO_CONTENT)                 
@@ -177,7 +196,7 @@ def rest_password(request,id):
 @api_view(['PUT','GET' ])
 def addsocial_links(request,id):
     try:
-        data = social_url.objects.get(id = id)
+        data = urlOption.objects.get(id = id)
     except:
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -206,7 +225,7 @@ def addsocial_links(request,id):
 def getsocial_links(request):
 
     try:
-        data = social_option_name.objects.all()
+        data = social_profile.objects.all()
     except:
         return Response(status.HTTP_404_NOT_FOUND)
 

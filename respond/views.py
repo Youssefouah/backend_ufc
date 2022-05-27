@@ -85,6 +85,49 @@ def registration_view(request):
         return Response(data,status=status.HTTP_201_CREATED)
 
 
+
+#function for return db inside social_profile
+def get_social_profile(name_data):
+    datass = {}
+    n=0
+    try:
+        data = social_profile.objects.all().filter(userurl_id=name_data)
+        print(data)
+        for i in data:
+            datas = {}
+            print(i.id)
+            datas['id'] = str(i.id)
+            datas['urlOptionId'] = str(i.urlOptionId)
+            datas[str(i.urlOptionId)] = get_url_option(str(i.urlOptionId))
+            datas['socialProfileUsername '] = str(i.socialProfileUsername)
+            datas['user_id'] = str(i.userurl_id)
+            datass["urls_social"+str(n)] = datas
+            n=n+1
+        return datass
+    except:
+        return None
+
+#function for return db inside urlOption
+def get_url_option(name_data):
+    datass = {}
+    n=0
+    try:
+        data = urlOption.objects.all().filter(id=name_data)
+        print(data)
+        for i in data:
+            datas = {}
+            datas['id'] = str(i.id)
+            datas['urlOptionName'] = str(i.urlOptionName)
+            datas['urlOptionUrl'] = str(i.urlOptionUrl)
+            datas['urlOptionColor'] = str(i.urlOptionColor)
+            datass['svg_logo'] = str(i.svg_logo)
+            datass['logo_url'] = str(i.logo_url)
+            datass["urls_option"+str(n)] = datas
+            n=n+1
+        return datass
+    except:
+        return None
+
 #this function for login
 #return {"token":token,"username":username,"email":email,"id":id,}
 @api_view(['POST', ])
@@ -101,19 +144,14 @@ def login(request):
                     email = User.objects.get(email=serializer.data['username'])
                     username =email
                     data = email.users_extended
+                    datas_urls = get_social_profile(username) 
                     #userdata_urls.objects.filter(userurl_id = username).all()
                     user = authenticate(username=username, password=serializer.data['password'])
                 else:
                     #in I replace variable username by a variable email
                     email = User.objects.get(username=serializer.data['username']) 
                     data = email.users_extended
-                    print(email)
-                    userdata_urls = social_profile.objects.filter(userurl_id = email)
-                    print(userdata_urls.values('userurl_id').all())
-                    for q in userdata_urls:
-                        for key, value in q.items():
-                            datas[key] = value
-                    print(datas)
+                    datas_urls = get_social_profile(email) 
                     #userdata_urles = userdata_urls.objects.filter(userurl_id = username)
                     user = authenticate(username=email, password=serializer.data['password'])
 
@@ -134,7 +172,7 @@ def login(request):
                  datas['address'] = data.address
                  datas['created_at'] = data.created_At
                  datas['updated_at'] = data.updated_At
-
+                 datas['urls'] = datas_urls
 
                  return Response(datas,status=status.HTTP_200_OK)
         else:

@@ -178,3 +178,19 @@ var get_user_profile_picture = {
 /// .../update_stats
 /// .../delete_stats
 /// .../add_stats
+///  
+
+var todo = {
+"/*please specify the working the finished routes and the parameters for each route and the return value for each route
+///  admin/
+// page_main_view/<str:board_id>/ [name='repond']
+// edit_profile/<str:id>/
+// signup/
+// login/ [name='login']
+// change_password/ [name='forgot_password']
+// rest_password_email/ [name='rest_password_email']
+// rest_password_code/<int:id>/ [name='rest_password_code']
+// rest_password/<int:id>/ [name='rest_password']
+// add_social_links/<int:id>/ [name='add_social']
+// social_links_options/ [name='add_social']",
+};

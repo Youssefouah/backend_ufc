@@ -2,7 +2,6 @@ from email import message
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate
-from yaml import serialize
 from .serializers import *
 from .models import *
 from django.contrib.auth.models import User

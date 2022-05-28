@@ -237,11 +237,20 @@ def addsocial_links(request):
         serialize=Sociallinkserialiser(data=request.data)
        # print(serialize)
         if serialize.is_valid() :
-            print("valid")
             serialize.save()
             return Response(serialize.data,status=status.HTTP_200_OK)
     return Response(serialize.errors, status=status.HTTP_417_EXPECTATION_FAILED)      
 
+@api_view(['PUT' ])
+def updatesocial_links(request):
+        if request.method == 'PUT':
+            serialize=UpdateSocialserialiser(data=request.data)
+        # print(serialize)
+            if serialize.is_valid() :
+                print("valid")
+                serialize.update()
+                return Response(serialize.data,status=status.HTTP_200_OK)
+        return Response(serialize.errors, status=status.HTTP_417_EXPECTATION_FAILED)
 
 
 

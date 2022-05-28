@@ -14,4 +14,5 @@ urlpatterns = [
      path('rest_password_code/<int:id>/',views.rest_password_code,name = "rest_password_code"),
      path('rest_password/<int:id>/',views.rest_password,name = "rest_password"),
      path('add_social_links/',views.addsocial_links,name = "add_social"),
+     path('update_social_links/',views.updatesocial_links,name = "update_social"),
 ]

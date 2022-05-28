@@ -67,11 +67,12 @@ var delete_user_url_profile = {
 //
 var update_user_url_profile = {
   "body": {
+    "id": "deba7edb-0c22-488e-a0ac-6ec6eb45ad16",
     "urlOptionId": "2cef0a5f-3844-40fe-8f9f-dea132b32cb5",
-    "socialProfileUsername ": "youssef55",
+    "socialProfileUsername": "youssef55",
     "user_id": "youssef",
     "created_at": "2022-05-26T22:48:31.666435Z",
-    "updated_at": "2022-05-27T13:51:48.541688Z",
+    "updated_at": "2022-05-27T13:51:48.541688Z"
   }
 };
 
@@ -79,7 +80,7 @@ var update_user_url_profile = {
 ///
 // i should be able to get user only without urls
 // .../get_user/no_urls
-//
+//    	
 var get_user_no_urls = {
   "body": {
     "token": "a4893df793671acae2d88214e48c9ff7e3c94d4c",

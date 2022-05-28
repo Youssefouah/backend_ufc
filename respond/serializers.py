@@ -212,6 +212,37 @@ class Sociallinkserialiser(serializers.ModelSerializer):
 		print(data)
 		return data
 
+class UpdateSocialserialiser(serializers.ModelSerializer):
+	user_id=serializers.CharField(max_length=100)
+	id = serializers.CharField(max_length=100)
+	class Meta:
+		model = social_profile
+		fields = ['id','socialProfileUsername','user_id','urlOptionId','created_at','updated_at']
+	
+	def update(self):
+
+		id_url =self.validated_data['id']
+		print(id_url)
+		userid =self.validated_data['user_id']
+		user = User.objects.get(username=userid)
+		print(user)
+		socialprofileusername =self.validated_data['socialProfileUsername']
+		urloptionid =self.validated_data['urlOptionId']
+		created_at = self.validated_data['created_at']
+		updated_at = self.validated_data['updated_at']
+
+		if social_profile.objects.filter(id=id_url).exists():
+			data = social_profile.objects.get(id=id_url)
+			data.socialProfileUsername = socialprofileusername
+			data.userurl_id = user
+			data.urlOptionId = urloptionid
+			data.created_at = created_at
+			data.updated_at = updated_at
+			data.save()
+			return Response(status=status.HTTP_200_OK)	
+		else:
+			return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 	    		
 

@@ -46,10 +46,10 @@ var response = {
 var post = {
   "body": {
     "urlOptionId": "2cef0a5f-3844-40fe-8f9f-dea132b32cb5",
-    "socialProfileUsername ": "youssef55",
+    "socialProfileUsername": "youssef55",
     "user_id": "youssef",
     "created_at": "2022-05-26T22:48:31.666435Z",
-    "updated_at": "2022-05-27T13:51:48.541688Z",
+    "updated_at": "2022-05-27T13:51:48.541688Z"
   }
 };
 
@@ -181,7 +181,7 @@ var get_user_profile_picture = {
 ///  
 
 var todo = {
-"/*please specify the working the finished routes and the parameters for each route and the return value for each route
+//please specify the working the finished routes and the parameters for each route and the return value for each route
 ///  admin/
 // page_main_view/<str:board_id>/ [name='repond']
 // edit_profile/<str:id>/

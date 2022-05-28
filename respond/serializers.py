@@ -197,16 +197,24 @@ class rest_serializer_3(serializers.ModelSerializer):
 
 #table scocial_links:
 class Sociallinkserialiser(serializers.ModelSerializer):
-	class Meta:
-		model = urlOption
-		fields = '__all__'			
-
-#table cocial links options:
-class Social_links_options(serializers.ModelSerializer):
+	user_id=serializers.CharField(max_length=100)
 	class Meta:
 		model = social_profile
-		fields = '__all__'			
+		fields = ['socialProfileUsername','user_id','urlOptionId','created_at','updated_at']
+	
+	def save(self):
+		userid =self.validated_data['user_id']
+		user = User.objects.get(username=userid)
+		data = social_profile(socialProfileUsername = self.validated_data['socialProfileUsername'],
+		userurl_id = user,urlOptionId = self.validated_data['urlOptionId'],
+		created_at = self.validated_data['created_at'],updated_at = self.validated_data['updated_at'])	
+		data.save()
+		print(data)
+		return data
+
+
+	    		
 
 
 
-
+	

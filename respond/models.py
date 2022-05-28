@@ -20,8 +20,8 @@ class Users_extended(models.Model):
     address = models.CharField(max_length = 100,null = True,blank = True)
     job = models.CharField(max_length = 100,null = True,blank = True)
     #image = models.ImageField(upload_to = 'photos',null = True,blank = True)
-    created_At = models.DateTimeField(auto_now_add=True, editable=False)
-    updated_At = models.DateTimeField(auto_now=True, editable=False)
+    created_At = models.DateTimeField( editable=False)
+    updated_At = models.DateTimeField( editable=False)
     def __str__(self):
         return str(self.job)
 
@@ -40,13 +40,13 @@ class urlOption(models.Model):
 
 #ids for users  and urls
 class social_profile(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True,auto_created=True, default=uuid.uuid4, editable=False)
     #id = models.autuui(primary_key=True)
     userurl_id = models.ForeignKey(User,on_delete=models.CASCADE)
     urlOptionId = models.ForeignKey(urlOption,on_delete=models.CASCADE,null = True)
     socialProfileUsername = models.CharField(max_length = 15,blank=True,null=True)
-    created_At = models.DateTimeField(auto_now_add=True, editable=False)
-    updated_At = models.DateTimeField(auto_now=True, editable=False)
+    created_at = models.CharField(max_length=100,null = True,blank = True)
+    updated_at = models.CharField(max_length=100,null = True,blank = True)
 
     def __str__(self):
         return str(self.id)

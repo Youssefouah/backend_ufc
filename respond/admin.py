@@ -13,7 +13,7 @@ class Social_optionAdmin(admin.ModelAdmin):
 
 class Social_urlAdmin(admin.ModelAdmin):
     # a list of displayed columns name.
-    list_display = ['id','userurl_id','urlOptionId','socialProfileUsername','created_At','updated_At']
+    list_display = ['id','userurl_id','urlOptionId','socialProfileUsername','created_at','updated_at']
 
 
 

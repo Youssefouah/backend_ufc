@@ -2,6 +2,7 @@ from email import message
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate
+from yaml import serialize
 from .serializers import *
 from .models import *
 from django.contrib.auth.models import User
@@ -21,6 +22,32 @@ def respond(request,board_id):
     print(data.users.extended.phone)
     return render(request,"responder/index.html",{'data':data})
 
+#function for return db inside social_profile    
+def get_social_profile(name_data):
+    datass = []
+    n=0
+    try:
+        data = social_profile.objects.all().filter(userurl_id=name_data)
+        print(data)
+        for i in data:
+            datas = {}
+            print(i.id)
+            datas['id'] = str(i.id)
+            datas['urlOptionId'] = str(i.urlOptionId)
+            
+            datas['socialProfileUsername '] = str(i.socialProfileUsername)
+            datas['user_id'] = str(i.userurl_id)
+            data_url = urlOption.objects.all().filter(id=str(i.urlOptionId))
+            for j in data_url:
+                datas['urlOptionName'] = str(j.urlOptionName)
+                datas['urlOptionUrl'] = str(j.urlOptionUrl)
+                datas['urlOptionColor'] = str(j.urlOptionColor)
+                datas['svg_logo'] = str(j.svg_logo)
+                datas['logo_url'] = str(j.logo_url)
+            datass.append(datas)
+        return datass
+    except:
+        return None
 
 # this function for GRUD profile
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -86,32 +113,8 @@ def registration_view(request):
 
 
 
-#function for return db inside social_profile
-def get_social_profile(name_data):
-    datass = []
-    n=0
-    try:
-        data = social_profile.objects.all().filter(userurl_id=name_data)
-        print(data)
-        for i in data:
-            datas = {}
-            print(i.id)
-            datas['id'] = str(i.id)
-            datas['urlOptionId'] = str(i.urlOptionId)
-            
-            datas['socialProfileUsername '] = str(i.socialProfileUsername)
-            datas['user_id'] = str(i.userurl_id)
-            data_url = urlOption.objects.all().filter(id=str(i.urlOptionId))
-            for j in data_url:
-                datas['urlOptionName'] = str(j.urlOptionName)
-                datas['urlOptionUrl'] = str(j.urlOptionUrl)
-                datas['urlOptionColor'] = str(j.urlOptionColor)
-                datas['svg_logo'] = str(j.svg_logo)
-                datas['logo_url'] = str(j.logo_url)
-            datass.append(datas)
-        return datass
-    except:
-        return None
+
+
 
 
 
@@ -216,53 +219,47 @@ def rest_password(request,id):
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)    
         
             
+"""
+this function for add social profile
+ {
+    "urlOptionId": "2cef0a5f-3844-40fe-8f9f-dea132b32cb5",
+    "socialProfileUsername": "youssef55",
+    "user_id": "youssef",
+    "created_at": "2022-05-26T22:48:31.666435Z",
+    "updated_at": "2022-05-27T13:51:48.541688Z"
+  }
+"""
+
+@api_view(['POST' ])
+def addsocial_links(request):
+
+    if request.method == 'POST':
+        serialize=Sociallinkserialiser(data=request.data)
+       # print(serialize)
+        if serialize.is_valid() :
+            print("valid")
+            serialize.save()
+            return Response(serialize.data,status=status.HTTP_200_OK)
+    return Response(serialize.errors, status=status.HTTP_417_EXPECTATION_FAILED)      
 
 
-@api_view(['PUT','GET' ])
-def addsocial_links(request,id):
-    try:
-        data = urlOption.objects.get(id = id)
-    except:
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    if request.method == 'GET':
-        serializer=Sociallinkserialiser(data)
-        return Response(serializer.data,status=status.HTTP_200_OK)
 
 
 
-    if request.method == 'PUT':
-        serializer=Sociallinkserialiser(data,data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_Modified_204)
-
+"""
     #delete data in table links
     if request.method == 'DELETE':
-        data.delete()   
-
-
-    return Response(status=status.HTTP_417_EXPECTATION_FAILED)
-
-
-#table social_option
-@api_view(['GET', ])
-def getsocial_links(request):
-
+        for i in data:
+            i.delete()  
+"""
+"""
     try:
-        data = social_profile.objects.all()
+        id_hash = Users_extended.objects.get(id=id).user_id
+        print(id_hash)
+        data = urlOption.objects.all.filter(userurl_id = id_hash)
     except:
-        return Response(status.HTTP_404_NOT_FOUND)
-
-
-    if request.method == 'GET':
-        serializer=Social_links_options(data)
-        return Response(serializer.data)
-
-    return Response(status=status.HTTP_417_EXPECTATION_FAILED)
-
-
-
+        return Response(status=status.HTTP_204_NO_CONTENT)
+"""
 
 
 

@@ -227,8 +227,6 @@ this function for add social profile
     "urlOptionId": "2cef0a5f-3844-40fe-8f9f-dea132b32cb5",
     "socialProfileUsername": "youssef55",
     "user_id": "youssef",
-    "created_at": "2022-05-26T22:48:31.666435Z",
-    "updated_at": "2022-05-27T13:51:48.541688Z"
   }
 """
 
@@ -240,8 +238,8 @@ def addsocial_links(request):
        # print(serialize)
         if serialize.is_valid() :
             serialize.save()
-            return Response(serialize.data,status=status.HTTP_200_OK)
-    return Response(serialize.errors, status=status.HTTP_417_EXPECTATION_FAILED)      
+            return Response(status=status.HTTP_200_OK)
+    return Response( status=status.HTTP_417_EXPECTATION_FAILED)      
 
 @api_view(['PUT' ])
 def updatesocial_links(request):
@@ -254,6 +252,26 @@ def updatesocial_links(request):
                 return Response(serialize.data,status=status.HTTP_200_OK)
         return Response(serialize.errors, status=status.HTTP_417_EXPECTATION_FAILED)
 
+
+
+@api_view(['GET' ])
+def get_user(request,token):
+
+    try:
+        user = Token.objects.get(token=token).user
+        datas = User.objects.get(username=user)
+        data = user.users_extended
+
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serialize=Sociallinkserialiser(data=request.data)
+        # print(serialize)
+        if serialize.is_valid() :
+            serialize.save()
+            return Response(status=status.HTTP_200_OK)
+    return Response( status=status.HTTP_417_EXPECTATION_FAILED)
 
 
 

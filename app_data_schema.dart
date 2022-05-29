@@ -136,6 +136,31 @@ var get_user_profile_picture = {
     "profile_picture_url": "https://www.google.com/images/branding/googlelogo/",
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // => return HTTP 200 OK if success if user doesnt exist return HTTP 404 Not Found
 ////////////////////////
 ////
@@ -186,13 +211,107 @@ var todo = {
 //please specify the working the finished routes and the parameters for each route and the return value for each route
 ///  admin/
 // page_main_view/<str:board_id>/ [name='repond']
-// edit_profile/<str:id>/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// edit_profile/<str:id>/  
+//id is the id of the user
+// this function have three request when
+//GET return data like this :
+"""
+{
+    "id": "9d6a6735-810b-44c4-9e29-9fcfaa881b61",
+    "job": "null",
+    "address": "null",
+    "phone": "null",
+    "created_At": "2022-05-26T22:48:31.666435Z",
+    "updated_At": "2022-05-26T22:48:41.880932Z",
+    "username": "youssef",
+    "email": "youssef1997@gmail.com",
+    "token": "a4893df793671acae2d88214e48c9ff7e3c94d4c"
+}
+"""
+//PUT update the user giveen data like this
+"""
+{
+    "id": "9d6a6735-810b-44c4-9e29-9fcfaa881b61",
+    "job": "null",
+    "address": "null",
+    "phone": "null",
+    "username": "admin",
+    "email": "youssef1997@gmail.com",
+    "token": "a4893df793671acae2d88214e48c9ff7e3c94d4c"
+}
+"""
+//DELETE delete just id inside url and request delete
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // signup/
+// this give him data like this
+"""
+{
+    "username": "youssef",
+    "email": "youssef15@gmail.com",
+    "password" : "dell"
+}
+return
+{
+    "email": "youssef15@gmail.com",
+    "username": "youssef",
+    "token": "5dddbc64dd6a059d9afa15ce7ff1d53db01bdcf0"
+}
+"""
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // login/ [name='login']
+//this give him data like this
+"""
+post
+{
+    "username": username or email,
+    "password" : "dell"
+}
+return 
+{
+    "token": "5dddbc64dd6a059d9afa15ce7ff1d53db01bdcf0",
+    "email": "youssef15@gmail.com",
+    "username": "youssef",
+    "id": "32148288-3a9e-4f4d-8eec-75fad2b6b567",
+    "job": null,
+    "phone": null,
+    "address": null,
+    "created_at": "2022-05-29T18:38:11.256280Z",
+    "updated_at": "2022-05-29T18:38:11.202528Z",
+    "url_profiles": []
+}
+"""
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // change_password/ [name='forgot_password']
+"""
+post
+{
+"username" : "admin",
+"new_password":"admin",
+"old_password" :"dell"
+}
+
+"""
+
+
 // rest_password_email/ [name='rest_password_email']
 // rest_password_code/<int:id>/ [name='rest_password_code']
 // rest_password/<int:id>/ [name='rest_password']
-// add_social_links/<int:id>/ [name='add_social']
+
+
+
+// add_social_profiles/
+"""
+{
+    "urlOptionId": "2cef0a5f-3844-40fe-8f9f-dea132b32cb5",
+    "socialProfileUsername": "imane",
+    "username": "youssef",
+  }
+
+"""
 // social_links_options/ [name='add_social']",
 };

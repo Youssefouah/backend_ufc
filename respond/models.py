@@ -20,8 +20,8 @@ class Users_extended(models.Model):
     address = models.CharField(max_length = 100,null = True,blank = True)
     job = models.CharField(max_length = 100,null = True,blank = True)
     #image = models.ImageField(upload_to = 'photos',null = True,blank = True)
-    created_At = models.DateTimeField()
-    updated_At = models.DateTimeField()
+    created_At = models.DateTimeField(auto_now=True)
+    updated_At = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return str(self.job)
 
@@ -45,8 +45,8 @@ class social_profile(models.Model):
     userurl_id = models.ForeignKey(User,on_delete=models.CASCADE,null = True)
     urlOptionId = models.ForeignKey(urlOption,on_delete=models.CASCADE,null = True)
     socialProfileUsername = models.CharField(max_length = 15,blank=True,null=True)
-    created_at = models.CharField(max_length=100,null = True,blank = True)
-    updated_at = models.CharField(max_length=100,null = True,blank = True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.id)

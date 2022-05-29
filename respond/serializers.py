@@ -30,13 +30,11 @@ class PutusersSerialiser(serializers.ModelSerializer):
 	address = serializers.CharField(max_length=100)
 	phone = serializers.CharField(max_length=30)
 	job = serializers.CharField(max_length=100)
-	created_at = serializers.DateTimeField()
-	updated_at = serializers.DateTimeField()
 	token = serializers.CharField(max_length=100)
 	id = serializers.UUIDField()
 	class Meta:
 		model = Users_extended
-		fields = ('username','email','address','phone','job','created_at','updated_at','token','id')
+		fields = ('username','email','address','phone','job','token','id')
 
 	def save(self):
 		email=self.validated_data['email']
@@ -45,8 +43,6 @@ class PutusersSerialiser(serializers.ModelSerializer):
 		address=self.validated_data['address']
 		phone=self.validated_data['phone']
 		job=self.validated_data['job']
-		created_at=self.validated_data['created_at']
-		updated_at=self.validated_data['updated_at']
 		token=self.validated_data['token']
 		id=self.validated_data['id']
 			#if your username is existing get the query of your specific username 
@@ -61,8 +57,6 @@ class PutusersSerialiser(serializers.ModelSerializer):
 		userds.address=address
 		userds.phone=phone	
 		userds.job=job
-		userds.created_at=created_at
-		userds.updated_at=updated_at
 
 
 		userd.save()
@@ -210,17 +204,16 @@ class rest_serializer_3(serializers.ModelSerializer):
 
 #table scocial_links:
 class Sociallinkserialiser(serializers.ModelSerializer):
-	user_id=serializers.CharField(max_length=100)
+	username=serializers.CharField(max_length=100)
 	class Meta:
 		model = social_profile
-		fields = ['socialProfileUsername','user_id','urlOptionId','created_at','updated_at']
+		fields = ['socialProfileUsername','username','urlOptionId']
 	
 	def save(self):
-		userid =self.validated_data['user_id']
+		userid =self.validated_data['username']
 		user = User.objects.get(username=userid)
 		data = social_profile(socialProfileUsername = self.validated_data['socialProfileUsername'],
-		userurl_id = user,urlOptionId = self.validated_data['urlOptionId'],
-		created_at = self.validated_data['created_at'],updated_at = self.validated_data['updated_at'])	
+		userurl_id = user,urlOptionId = self.validated_data['urlOptionId'])	
 		data.save()
 		print(data)
 		return data
@@ -230,7 +223,7 @@ class UpdateSocialserialiser(serializers.ModelSerializer):
 	id = serializers.CharField(max_length=100)
 	class Meta:
 		model = social_profile
-		fields = ['id','socialProfileUsername','user_id','urlOptionId','created_at','updated_at']
+		fields = ['id','socialProfileUsername','user_id','urlOptionId']
 	
 	def update(self):
 
@@ -241,16 +234,16 @@ class UpdateSocialserialiser(serializers.ModelSerializer):
 		print(user)
 		socialprofileusername =self.validated_data['socialProfileUsername']
 		urloptionid =self.validated_data['urlOptionId']
-		created_at = self.validated_data['created_at']
-		updated_at = self.validated_data['updated_at']
+		#created_at = self.validated_data['created_at']
+		#updated_at = self.validated_data['updated_at']
 
 		if social_profile.objects.filter(id=id_url).exists():
 			data = social_profile.objects.get(id=id_url)
 			data.socialProfileUsername = socialprofileusername
 			data.userurl_id = user
 			data.urlOptionId = urloptionid
-			data.created_at = created_at
-			data.updated_at = updated_at
+		#	data.created_at = created_at
+		#	data.updated_at = updated_at
 			data.save()
 			return Response(status=status.HTTP_200_OK)	
 		else:

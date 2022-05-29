@@ -52,11 +52,14 @@ def get_social_profile(name_data):
 @api_view(['GET', 'PUT', 'DELETE'])
 #@permission_classes([IsAuthenticated,])
 def edit_profile(request,id):
+    datar = {}
     try:
         #getting data this id
         id_hash = Users_extended.objects.get(id=id).user_id
         data_user = User.objects.get(username = id_hash)
         data = data_user.users_extended
+        token = Token.objects.get(user=data_user).key
+        datar['token'] = token
 
     except :
         return Response(status=status.HTTP_404_NOT_FOUND)   
@@ -73,7 +76,7 @@ def edit_profile(request,id):
         table_user = dict(ser1.data)
 
         #all data for user
-        table_all = table_users|table_user
+        table_all = table_users|table_user|datar
         return Response(table_all)   
     
     #edit data in table users("image ,adress,phone")

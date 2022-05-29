@@ -26,24 +26,33 @@ class UsersSerialiser(serializers.ModelSerializer):
 class PutusersSerialiser(serializers.ModelSerializer):
 	username=serializers.CharField(max_length=100)
 	email=serializers.CharField(max_length=100)
-	user=serializers.IntegerField()
+	#user=serializers.IntegerField()
 	address = serializers.CharField(max_length=100)
-	phone = serializers.CharField(max_length=24)
-
-
+	phone = serializers.CharField(max_length=30)
+	job = serializers.CharField(max_length=100)
+	created_at = serializers.DateTimeField()
+	updated_at = serializers.DateTimeField()
+	token = serializers.CharField(max_length=100)
+	id = serializers.UUIDField()
 	class Meta:
 		model = Users_extended
-		fields = ('user','username','email','address','phone')
+		fields = ('username','email','address','phone','job','created_at','updated_at','token','id')
 
 	def save(self):
 		email=self.validated_data['email']
 		username=self.validated_data['username']
-		user=self.validated_data['user']
+		#user=self.validated_data['user']
 		address=self.validated_data['address']
 		phone=self.validated_data['phone']
+		job=self.validated_data['job']
+		created_at=self.validated_data['created_at']
+		updated_at=self.validated_data['updated_at']
+		token=self.validated_data['token']
+		id=self.validated_data['id']
 			#if your username is existing get the query of your specific username 
-		userd=User.objects.get(id=user)
-		userds = Users_extended.objects.get(user=user)
+		userds = Users_extended.objects.get(id=id)
+		userd=User.objects.get(username=userds.user_id.username)
+		#data_tocken = Token.objects.get(user_id=userd.id)
 			#then set the new username and email to the existing username
 		userd.username=username
 		userd.email=email
@@ -51,6 +60,10 @@ class PutusersSerialiser(serializers.ModelSerializer):
 			#then set the new address and phone to the existing address and phone
 		userds.address=address
 		userds.phone=phone	
+		userds.job=job
+		userds.created_at=created_at
+		userds.updated_at=updated_at
+
 
 		userd.save()
 		userds.save()

@@ -78,7 +78,8 @@ var update_user_url_profile = {
 
 //////////////////////////////////////////////////////////////
 ///
-// i should be able to get user only without urls
+// i should be able to get user only without urls²  
+
 // .../get_user/no_urls
 //    	
 var get_user_no_urls = {

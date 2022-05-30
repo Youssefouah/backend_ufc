@@ -371,7 +371,7 @@ status = status.HTTP_200_OK
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       ///update_url_profile/
-      """
+ """
 give data like this
 {
     "id": "ef77bdeb-de00-4c8e-870e-cced284411dd",(//user inside the profile not user)
@@ -385,11 +385,33 @@ status=status.HTTP_417_EXPECTATION_FAILED
 
 """
 
-// social_links_options/ [name='add_social']",
 };
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// social_links_options/ [name='add_social']",
+//get likke this this
+var j= 
+[
+    {
+        "id": "27fc9b84-5771-4069-bd61-6114df365a2a",
+        "urlOptionName": "facebook",
+        "urlOptionUrl": "https://www.facebook.com/",
+        "urlOptionColor": "#00112233",
+        "svg_logo": "logos/images_2wRG9wi.png",
+        "logo_url": "https://img.icons8.com/ios/344/instagram-new--v1.png"
+    },
+    {
+        "id": "9c33ef89-be9e-4365-84ec-6ff9bf807afc",
+        "urlOptionName": "instagram",
+        "urlOptionUrl": "http://www.google.com",
+        "urlOptionColor": "#0011223654",
+        "svg_logo": "logos/index_VFGl4FK.jpeg",
+        "logo_url": "https://img.icons8.com/ios/344/instagram-new--v1.png"
+    }
+];
+//iffaild return status=status.HTTP_404_NOT_FOUND
+
 //// Urgents ?????>!!!!!!!!!!!
-var urgetns = {
-  'please implement': 'get_url_options/'
-// ineed it it now..
-};
+

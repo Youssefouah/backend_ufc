@@ -315,6 +315,34 @@ def get_user_url_profile(request,token):
         return Response(status=status.HTTP_404_NOT_FOUND) 
 
 
+@api_view(['GET'])
+def get_urls_option(request):
+    data_all =[]
+    try:
+        data = urlOption.objects.all()
+        for i in data:
+            datas = {
+                'id':str(i.id),
+                'urlOptionName':str(i.urlOptionName),
+                'urlOptionUrl':str(i.urlOptionUrl),
+                'urlOptionColor':str(i.urlOptionColor),
+                'svg_logo':str(i.svg_logo),
+                'logo_url':str(i.logo_url)
+
+            }   
+            data_all.append(datas)
+        #ser = urlsOpseriamiser(data)
+        return Response(data_all,status = status.HTTP_200_OK) 
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+  
+  
+         
+
+
+
+
 """
     #delete data in table links
     if request.method == 'DELETE':

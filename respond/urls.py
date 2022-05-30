@@ -18,4 +18,5 @@ urlpatterns = [
      path('get_user/url_profiles/<str:token>',views.get_urls_profile,name = "get_data_urls"),
      path('get_user_url_profile/<str:token>',views.get_user_url_profile,name = "get_data-user_and_urls"),
      path('update_url_profile/',views.updatesocial_links,name = "update_social"),
+     path('social_links_options/',views.get_urls_option,name = "get_all_social_links"),
 ]

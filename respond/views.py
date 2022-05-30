@@ -48,7 +48,7 @@ def get_social_profile(name_data):
             datas['id'] = str(i.id)
             datas['urlOptionId'] = str(i.urlOptionId)
             
-            datas['socialProfileUsername '] = str(i.socialProfileUsername)
+            datas['socialProfileUsername'] = str(i.socialProfileUsername)
             datas['user_id'] = str(i.userurl_id)
             data_url = urlOption.objects.all().filter(id=str(i.urlOptionId))
             for j in data_url:

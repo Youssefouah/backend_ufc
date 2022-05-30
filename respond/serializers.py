@@ -17,6 +17,18 @@ code = {}
 
 
 
+class Urlsserialiser(serializers.ModelSerializer):
+	class Meta:
+		model = social_profile
+		fields = '__all__'
+
+
+class urlsOpseriamiser(serializers.ModelSerializer):
+	class Meta:
+		model = urlOption
+		fields = '__all__'		
+
+
 
 class UsersSerialiser(serializers.ModelSerializer):
     class Meta:
@@ -221,6 +233,8 @@ class Sociallinkserialiser(serializers.ModelSerializer):
 class UpdateSocialserialiser(serializers.ModelSerializer):
 	user_id=serializers.CharField(max_length=100)
 	id = serializers.CharField(max_length=100)
+	socialProfileUsername = serializers.CharField(max_length=100)
+	urlOptionId = serializers.CharField(max_length=100)
 	class Meta:
 		model = social_profile
 		fields = ['id','socialProfileUsername','user_id','urlOptionId']
@@ -239,9 +253,10 @@ class UpdateSocialserialiser(serializers.ModelSerializer):
 
 		if social_profile.objects.filter(id=id_url).exists():
 			data = social_profile.objects.get(id=id_url)
+			urloptionid_url =  urlOption.objects.get(id=urloptionid)
 			data.socialProfileUsername = socialprofileusername
 			data.userurl_id = user
-			data.urlOptionId = urloptionid
+			data.urlOptionId = urloptionid_url
 		#	data.created_at = created_at
 		#	data.updated_at = updated_at
 			data.save()

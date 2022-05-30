@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
+User._meta.get_field('email')._unique = True
 # Create your models here.
 
 
@@ -20,8 +21,8 @@ class Users_extended(models.Model):
     address = models.CharField(max_length = 100,null = True,blank = True)
     job = models.CharField(max_length = 100,null = True,blank = True)
     #image = models.ImageField(upload_to = 'photos',null = True,blank = True)
-    created_At = models.DateTimeField(auto_now=True)
-    updated_At = models.DateTimeField(auto_now_add=True)
+    created_At = models.DateTimeField(auto_now=True,editable = True)
+    updated_At = models.DateTimeField(auto_now_add=True,editable = True)
     def __str__(self):
         return str(self.job)
 
@@ -44,7 +45,7 @@ class social_profile(models.Model):
     #id = models.autuui(primary_key=True)
     userurl_id = models.ForeignKey(User,on_delete=models.CASCADE,null = True)
     urlOptionId = models.ForeignKey(urlOption,on_delete=models.CASCADE,null = True)
-    socialProfileUsername = models.CharField(max_length = 15,blank=True,null=True)
+    socialProfileUsername = models.CharField(max_length = 85,blank=True,null=True)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 

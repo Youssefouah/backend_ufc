@@ -182,12 +182,15 @@ var get_user_profile_picture = {
 // .../get_user_url_profile
 // .../update_user/
 // .../update_url_profile(s)
+
+
+
 // .../delete_user_url_profile
 // .../upload_user_profile_picture
 // .../get_user_profile_picture
 // .../update_user_password/
 // .../reset_user_password/
-
+//not finish
 //// when you are done . add another table name it stats_table it should contain 
 /// userId 
 /// url_profile_id
@@ -294,14 +297,15 @@ post
 "new_password":"admin",
 "old_password" :"dell"
 }
+if faild return HTTP 405 Method Not Allowed
 
 """
 
-
+//not finish
 // rest_password_email/ [name='rest_password_email']
 // rest_password_code/<int:id>/ [name='rest_password_code']
 // rest_password/<int:id>/ [name='rest_password']
-
+//not finish
 
 
 // add_social_profiles/
@@ -311,7 +315,105 @@ post
     "socialProfileUsername": "imane",
     "username": "youssef",
   }
+ if faild return status=status.HTTP_417_EXPECTATION_FAILED 
 
 """
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// get_user//no_url_profiles/+token
+"""
+if token not found :  return status.HTTP_404_NOT_FOUND
+else:  
+
+{
+    "id": "06afbcfe-7f84-4277-8dea-0971cb72c6a1",
+    "job": null,
+    "address": null,
+    "phone": null,
+    "created_At": "2022-05-29T19:48:00.049085Z",
+    "updated_At": "2022-05-29T19:46:36.748110Z",
+    "username": "admin",
+    "email": "admin@gmail.com"
+}
+status = status.HTTP_200_OK
+"""
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//get_user/url_profiles/+token
+"""
+if token not found :  return status.HTTP_404_NOT_FOUND
+else:
+{
+    "id": "ef77bdeb-de00-4c8e-870e-cced284411dd",
+    "urlOptionId": "27fc9b84-5771-4069-bd61-6114df365a2a",
+    "socialProfileUsername ": "din245",
+    "user_id": "admin",
+    "urlOptionName": "facebook",
+    "urlOptionUrl": "https://www.facebook.com/",
+    "urlOptionColor": "#00112233",
+    "svg_logo": "logos/images_2wRG9wi.png",
+    "logo_url": "https://img.icons8.com/ios/344/instagram-new--v1.png"
+}  
+status = status.HTTP_200_OK
+
+"""
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//get_user_url_profile/+token
+"""
+if token not found :  return status.HTTP_404_NOT_FOUND
+else:
+{
+    "id": "06afbcfe-7f84-4277-8dea-0971cb72c6a1",
+    "job": null,
+    "address": null,
+    "phone": null,
+    "created_At": "2022-05-29T19:48:00.049085Z",
+    "updated_At": "2022-05-29T19:46:36.748110Z",
+    "username": "admin",
+    "email": "admin@gmail.com",
+    "url_profiles": {
+        "id": "ef77bdeb-de00-4c8e-870e-cced284411dd",
+        "urlOptionId": "27fc9b84-5771-4069-bd61-6114df365a2a",
+        "socialProfileUsername ": "din245",
+        "user_id": "admin",
+        "urlOptionName": "facebook",
+        "urlOptionUrl": "https://www.facebook.com/",
+        "urlOptionColor": "#00112233",
+        "svg_logo": "logos/images_2wRG9wi.png",
+        "logo_url": "https://img.icons8.com/ios/344/instagram-new--v1.png"
+    }
+} 
+status = status.HTTP_200_OK
+
+
+
+"""
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///update_url_profile/
+"""
+give data like this
+{
+    "id": "ef77bdeb-de00-4c8e-870e-cced284411dd",(//user inside the profile not user)
+    "socialProfileUsername": "din24378",
+    "user_id": "admin",
+    "urlOptionId": "9c33ef89-be9e-4365-84ec-6ff9bf807afc"
+}
+and return status=status.HTTP_200_OK)
+if faild:
+status=status.HTTP_417_EXPECTATION_FAILED
+
+"""
+
+
+
+
 // social_links_options/ [name='add_social']",
 };

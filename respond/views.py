@@ -22,6 +22,20 @@ def respond(request,board_id):
     return render(request,"responder/index.html",{'data':data})
 
 #function for return db inside social_profile    
+def get_datathe_user(data,data_user):
+        ser = UsersSerialiser(data)
+        ser1 = UserSerialiser(data_user)
+
+        #data in table users
+        table_users = dict(ser.data)
+
+        #data_user in table user
+        table_user = dict(ser1.data)
+
+        #all data for user
+        table_all = table_users|table_user
+        return table_all
+
 def get_social_profile(name_data):
     datass = []
     n=0
@@ -247,10 +261,9 @@ def updatesocial_links(request):
             serialize=UpdateSocialserialiser(data=request.data)
         # print(serialize)
             if serialize.is_valid() :
-                print("valid")
                 serialize.update()
-                return Response(serialize.data,status=status.HTTP_200_OK)
-        return Response(serialize.errors, status=status.HTTP_417_EXPECTATION_FAILED)
+                return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_417_EXPECTATION_FAILED)
 
 
 
@@ -258,21 +271,48 @@ def updatesocial_links(request):
 def get_user(request,token):
 
     try:
-        user = Token.objects.get(token=token).user
+        user = Token.objects.get(key=token).user
         datas = User.objects.get(username=user)
-        data = user.users_extended
+        data = datas.users_extended
 
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serialize=Sociallinkserialiser(data=request.data)
-        # print(serialize)
-        if serialize.is_valid() :
-            serialize.save()
-            return Response(status=status.HTTP_200_OK)
+        #all data for user
+        table_all = get_datathe_user(data,datas)
+        return Response(table_all,status = status.HTTP_200_OK)   
     return Response( status=status.HTTP_417_EXPECTATION_FAILED)
 
+#return user with url
+@api_view(['GET'])
+def get_urls_profile(request,token):
+    try:
+        user = Token.objects.get(key=token).user
+        datas = User.objects.get(username=user)
+        data = get_social_profile(datas)
+        return Response(data[0],status = status.HTTP_200_OK) 
+
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND) 
+          
+
+#return user with url
+@api_view(['GET'])
+def get_user_url_profile(request,token):
+    try:
+        user = Token.objects.get(key=token).user
+        datas = User.objects.get(username=user)
+        data = datas.users_extended
+        #return table useer
+        table_user = get_datathe_user(data,datas)
+        #return urls
+        data_url = get_social_profile(datas)
+
+        table_user['url_profiles'] = data_url[0]
+        return Response(table_user,status = status.HTTP_200_OK) 
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND) 
 
 
 """

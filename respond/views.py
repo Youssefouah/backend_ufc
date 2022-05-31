@@ -41,10 +41,10 @@ def get_social_profile(name_data):
     n=0
     try:
         data = social_profile.objects.all().filter(userurl_id=name_data)
-        print(data)
+       # print(data)
         for i in data:
             datas = {}
-            print(i.id)
+            #print(i.id)
             datas['id'] = str(i.id)
             datas['urlOptionId'] = str(i.urlOptionId)
             
@@ -108,6 +108,26 @@ def edit_profile(request,id):
         data_user.delete()  
         data.delete() 
     return Response(status=status.HTTP_304_NOT_MODIFIED)      
+
+#delete user
+@api_view([ 'DELETE'])
+def delete_user_url_profile(request,id):
+    try:
+        data_users = Users_extended.objects.get(id=id)
+        id_hash = data_users.user_id
+        data_user = User.objects.get(username = id_hash)
+        token = Token.objects.get(user=data_user)
+        data_profile = social_profile.objects.all().filter(userurl_id=id_hash)
+        data_profile.delete()
+        data_user.delete()
+        token.delete()
+        data_users.delete()
+        #for i in data_profile:
+          #  print(i.id) 
+        return Response(status=status.HTTP_200_OK)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 
 @api_view(['POST', ])

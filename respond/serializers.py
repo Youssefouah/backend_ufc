@@ -13,7 +13,7 @@ from .signale import Signal_code
 import random
 
 
-code = {}
+#code = {}
 
 
 
@@ -179,12 +179,11 @@ class rest_serializer(serializers.ModelSerializer):
                 email, 
                 ]
             ) 
-			code[email] = number
-			id = User.objects.get(email=email).id
+			#code[email] = number
 		else :
 			return Response(status=status.HTTP_404_NOT_FOUND)	
 		
-		return Response(data = str(id),status=status.HTTP_200_OK)
+		return str(number)
 
 class rest_serializer_2(serializers.ModelSerializer):
 	code=serializers.CharField(max_length=100)
@@ -194,6 +193,7 @@ class rest_serializer_2(serializers.ModelSerializer):
 		
 	def validation(self):
 		code_entry=self.validated_data['code']
+
 		email = User.objects.get(id=4).email
 		if int(code_entry) == int(code[email]):
 			return Response(status=status.HTTP_200_OK)
@@ -201,17 +201,21 @@ class rest_serializer_2(serializers.ModelSerializer):
 			return Response(status=status.HTTP_404_NOT_FOUND)
 
 class rest_serializer_3(serializers.ModelSerializer):
+	email = serializers.CharField(max_length=100)	
 	new_password=serializers.CharField(max_length=100)
 	class Meta:
 		model = User
-		fields = ['new_password']
+		fields = ['new_password','email']
 		
 	def change(self):
+		#print(code)	
+		email = self.validated_data['email']
 		new_password=self.validated_data['new_password']
-		user=User.objects.get(id=4)
+		user = User.objects.get(email=email)
+		print(user)
 		user.set_password(new_password)
 		user.save()
-		del code[User.objects.get(id=id).email]
+		#del code[User.objects.get(email=email).email]
 		return Response(status=status.HTTP_200_OK)
 
 #table scocial_links:

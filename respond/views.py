@@ -225,12 +225,12 @@ def rest_password_code(request,id):
 
 #this function for rest password
 @api_view(['POST', ])
-def rest_password(request,id):
+def rest_password(request):
     if request.method == 'POST':
         serializer = rest_serializer_3(data=request.data)
         if serializer.is_valid():
-            code = serializer.change(id)
-            return Response(code)
+            code = serializer.change()
+            return code
         else:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)    
         

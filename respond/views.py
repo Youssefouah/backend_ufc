@@ -359,6 +359,18 @@ def get_urls_option(request):
   
   
          
+@api_view(['PUT'])
+def upload_user_profile_picture(request):
+    if request.method == 'PUT':
+        serializer = ProfilePictureSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.save()
+            return data
+        else:
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+    return Response(status=status.HTTP_417_EXPECTATION_FAILED)
+
+
 
 
 

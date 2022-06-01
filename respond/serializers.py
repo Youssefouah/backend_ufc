@@ -268,7 +268,20 @@ class UpdateSocialserialiser(serializers.ModelSerializer):
 		else:
 			return Response(status=status.HTTP_404_NOT_FOUND)
 
-
+class ProfilePictureSerializer(serializers.ModelSerializer):
+	id=serializers.CharField(max_length=100)
+	image = serializers.ImageField(max_length=None, use_url=True)
+	class Meta:
+		model = Users_extended
+		fields = ['id','image']
+	
+	def save(self):
+		userid =self.validated_data['id']
+		image = self.validated_data['image']
+		user = Users_extended.objects.get(id=userid)
+		user.image = image
+		user.save()
+		return Response(status=status.HTTP_200_OK)
 	    		
 
 

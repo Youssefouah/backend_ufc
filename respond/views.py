@@ -370,7 +370,17 @@ def upload_user_profile_picture(request):
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
     return Response(status=status.HTTP_417_EXPECTATION_FAILED)
 
+@api_view(['GET'])
+def get_user_profile_picture(request,token):
+    try:
+        user = Token.objects.get(key=token).user
+        datas = User.objects.get(username=user)
+        data = datas.users_extended
 
+        return Response(data.image.url,status = status.HTTP_200_OK)
+
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 

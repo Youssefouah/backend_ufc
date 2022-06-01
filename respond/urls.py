@@ -21,4 +21,5 @@ urlpatterns = [
      path('social_links_options/',views.get_urls_option,name = "get_all_social_links"),
      path('delete_user_url_profile/<str:id>',views.delete_user_url_profile,name = "delete_user_url_profile"),
      path('upload_user_profile_picture',views.upload_user_profile_picture,name = "upload_user_profile_picture"),
+     path('get_user_profile_picture/<str:token>',views.get_user_profile_picture,name = "uget_user_profile_picture"),
 ]

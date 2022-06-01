@@ -182,10 +182,10 @@ def login(request):
                     user = authenticate(username=email, password=serializer.data['password'])
 
             except:
-                return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+                return Response(status=status.HTTP_404_NOT_FOUND)
        
             if user == None:
-                 return Response(status=status.HTTP_404_NOT_FOUND)
+                 return Response(status=status.HTTP_401_UNAUTHORIZED)
 
             else:
                  token = Token.objects.get(user_id= email.id).key
@@ -202,7 +202,7 @@ def login(request):
 
                  return Response(datas,status=status.HTTP_200_OK)
         else:
-            return Response(status=status.HTTP_204_NO_CONTENT)                 
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)                 
 
 
 
@@ -217,7 +217,7 @@ def change_password(request):
         msg = serializer.save()
         return msg
 
-    return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
 #this function for sending email to user givin email
 @api_view(['POST', ])
@@ -273,7 +273,7 @@ def addsocial_links(request):
         if serialize.is_valid() :
             serialize.save()
             return Response(status=status.HTTP_200_OK)
-    return Response( status=status.HTTP_417_EXPECTATION_FAILED)      
+    return Response(status=status.HTTP_417_EXPECTATION_FAILED)      
 
 @api_view(['PUT' ])
 def updatesocial_links(request):

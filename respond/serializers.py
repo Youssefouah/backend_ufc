@@ -140,11 +140,11 @@ class forgot_rest_serializer(serializers.ModelSerializer):
 						user.save()
 						return Response(status=status.HTTP_200_OK)
 					else:
-						return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+						return Response(status=status.HTTP_401_UNAUTHORIZED)
 				else:
 					return Response(status=status.HTTP_404_NOT_FOUND)		
 			except:
-				return Response(status=status.HTTP_404_NOT_FOUND)			
+				return Response(status=status.HTTP_502_BAD_GATEWAY)			
 
 	
 		elif User.objects.filter(username=username).exists() :
@@ -155,7 +155,7 @@ class forgot_rest_serializer(serializers.ModelSerializer):
 				user.save()
 				return Response(status=status.HTTP_200_OK)
 			else :
-				return Response(status=status.HTTP_304_NOT_MODIFIED)	
+				return Response(status=status.HTTP_401_UNAUTHORIZED)	
 
 		else:
 			return Response(status=status.HTTP_404_NOT_FOUND)

@@ -14,7 +14,15 @@ from .serializers import RegistrationSerializer
 from rest_framework.authtoken.models import Token
 
 
-
+def get_user_in_token(id):
+    try:
+        id_hash = Users_extended.objects.get(id=id).user_id
+        data_user = User.objects.get(username = id_hash)
+        data = data_user.users_extended
+        token = Token.objects.get(user=data_user).key
+        return True
+    except:
+        return False
 
 def respond(request,board_id):
     data = User.objects.get(username = board_id)
@@ -35,6 +43,14 @@ def get_datathe_user(data,data_user):
         #all data for user
         table_all = table_users|table_user
         return table_all
+
+def token_in_table(token):
+    try:
+        data = Token.objects.get(key=token)
+        return True
+    except:
+        return False
+
 
 def get_social_profile(name_data):
     datass = []
@@ -62,71 +78,74 @@ def get_social_profile(name_data):
     except:
         return None
 
+
+
 # this function for GRUD profile
 @api_view(['GET', 'PUT', 'DELETE'])
 #@permission_classes([IsAuthenticated,])
-def edit_profile(request,id):
-    datar = {}
-    try:
-        #getting data this id
-        id_hash = Users_extended.objects.get(id=id).user_id
-        data_user = User.objects.get(username = id_hash)
-        data = data_user.users_extended
-        token = Token.objects.get(user=data_user).key
-        datar['token'] = token
+def edit_profile(request,id,token):
+    if get_user_in_token(id) == True:
+        datar = {}
+        try:
+            #getting data this id
+            id_hash = Users_extended.objects.get(id=id).user_id
+            data_user = User.objects.get(username = id_hash)
+            data = data_user.users_extended
+            token = Token.objects.get(user=data_user).key
+            datar['token'] = token
 
-    except :
-        return Response(status=status.HTTP_404_NOT_FOUND)   
+        except :
+            return Response(status=status.HTTP_404_NOT_FOUND)   
     
 
-    if request.method == 'GET':
-        ser = UsersSerialiser(data)
-        ser1 = UserSerialiser(data_user)
-
-        #data in table users
-        table_users = dict(ser.data)
-
-        #data_user in table user
-        table_user = dict(ser1.data)
-
-        #all data for user
-        table_all = table_users|table_user|datar
-        return Response(table_all)   
+        if request.method == 'GET':
+            table_all = get_datathe_user(data,data_user)
+            return Response(table_all)   
     
     #edit data in table users("image ,adress,phone")
-    if request.method == 'PUT':
-        serlizer = PutusersSerialiser(data,data=request.data)
+        if request.method == 'PUT':
+            serlizer = PutusersSerialiser(data,data=request.data)
 
-        if serlizer.is_valid(raise_exception=True):
-            serlizer.save()
-            return Response(status=status.HTTP_200_OK)
+            if serlizer.is_valid(raise_exception=True):
+                serlizer.save()
+                return Response(status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)     
+            #delete data in table users
+        if request.method == 'DELETE':
+            data_user.delete()  
+            data.delete() 
 
-        return Response(status=status.HTTP_406_NOT_ACCEPTABLE)     
+        return Response(status=status.HTTP_304_NOT_MODIFIED)            
+        
+          
+    else:
+        data = {'message':'you are not authorized'}
+        return Response(data,status=status.HTTP_401_UNAUTHORIZED)         
 
-    #delete data in table users
-    if request.method == 'DELETE':
-        data_user.delete()  
-        data.delete() 
-    return Response(status=status.HTTP_304_NOT_MODIFIED)      
+  
 
 #delete user
 @api_view([ 'DELETE'])
-def delete_user_url_profile(request,id):
-    try:
-        data_users = Users_extended.objects.get(id=id)
-        id_hash = data_users.user_id
-        data_user = User.objects.get(username = id_hash)
-        token = Token.objects.get(user=data_user)
-        data_profile = social_profile.objects.all().filter(userurl_id=id_hash)
-        data_profile.delete()
-        data_user.delete()
-        token.delete()
-        data_users.delete()
+def delete_user_url_profile(request,id,token):
+    if get_user_in_token(id) == True:
+        try:
+            data_users = Users_extended.objects.get(id=id)
+            id_hash = data_users.user_id
+            data_user = User.objects.get(username = id_hash)
+            token = Token.objects.get(user=data_user)
+            data_profile = social_profile.objects.all().filter(userurl_id=id_hash)
+            data_profile.delete()
+            data_user.delete()
+            token.delete()
+            data_users.delete()
         #for i in data_profile:
           #  print(i.id) 
-        return Response(status=status.HTTP_200_OK)
-    except:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_200_OK)
+        except:
+             return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        data = {'message':'you are not authorized'}
+        return Response(data,status=status.HTTP_401_UNAUTHORIZED)     
 
 
 
@@ -170,14 +189,14 @@ def login(request):
                     email = User.objects.get(email=serializer.data['username'])
                     username =email
                     data = email.users_extended
-                    datas_urls = get_social_profile(username) 
+                    #datas_urls = get_social_profile(username) 
                     #userdata_urls.objects.filter(userurl_id = username).all()
                     user = authenticate(username=username, password=serializer.data['password'])
                 else:
                     #in I replace variable username by a variable email
                     email = User.objects.get(username=serializer.data['username']) 
                     data = email.users_extended
-                    datas_urls = get_social_profile(email) 
+                    #datas_urls = get_social_profile(email) 
                     #userdata_urles = userdata_urls.objects.filter(userurl_id = username)
                     user = authenticate(username=email, password=serializer.data['password'])
 
@@ -193,12 +212,12 @@ def login(request):
                  datas['email'] = email.email
                  datas['username'] = email.username
                  datas['id'] = data.id
-                 datas['job'] = data.job
-                 datas['phone'] = data.phone
-                 datas['address'] = data.address
-                 datas['created_at'] = data.created_At
-                 datas['updated_at'] = data.updated_At
-                 datas['url_profiles'] = datas_urls
+                 #datas['job'] = data.job
+                 #datas['phone'] = data.phone
+                 #datas['address'] = data.address
+                 #datas['created_at'] = data.created_At
+                 #datas['updated_at'] = data.updated_At
+                # datas['url_profiles'] = datas_urls
 
                  return Response(datas,status=status.HTTP_200_OK)
         else:
@@ -265,18 +284,22 @@ this function for add social profile
 """
 
 @api_view(['POST' ])
-def addsocial_links(request):
-
-    if request.method == 'POST':
-        serialize=Sociallinkserialiser(data=request.data)
+def addsocial_links(request,token):
+    if token_in_table(token):
+        if request.method == 'POST':
+            serialize=Sociallinkserialiser(data=request.data)
        # print(serialize)
-        if serialize.is_valid() :
-            serialize.save()
-            return Response(status=status.HTTP_200_OK)
-    return Response(status=status.HTTP_417_EXPECTATION_FAILED)      
+            if serialize.is_valid() :
+                serialize.save()
+                return Response(status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_417_EXPECTATION_FAILED)  
+    else:
+        data = {'message':'you are not authorized'}
+        return Response(data,status=status.HTTP_401_UNAUTHORIZED)            
 
 @api_view(['PUT' ])
-def updatesocial_links(request):
+def updatesocial_links(request,token):
+    if token_in_table(token):
         if request.method == 'PUT':
             serialize=UpdateSocialserialiser(data=request.data)
         # print(serialize)
@@ -284,6 +307,9 @@ def updatesocial_links(request):
                 serialize.update()
                 return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_417_EXPECTATION_FAILED)
+    else:
+        data = {'message':'you are not authorized'}
+        return Response(data,status=status.HTTP_401_UNAUTHORIZED)    
 
 
 
@@ -336,39 +362,44 @@ def get_user_url_profile(request,token):
 
 
 @api_view(['GET'])
-def get_urls_option(request):
-    data_all =[]
-    try:
-        data = urlOption.objects.all()
-        for i in data:
-            datas = {
-                'id':str(i.id),
-                'urlOptionName':str(i.urlOptionName),
-                'urlOptionUrl':str(i.urlOptionUrl),
-                'urlOptionColor':str(i.urlOptionColor),
-                'svg_logo':str(i.svg_logo),
-                'logo_url':str(i.logo_url)
-
-            }   
-            data_all.append(datas)
+def get_urls_option(request,token):
+    if token_in_table(token):
+        data_all =[]
+        try:
+            data = urlOption.objects.all()
+            for i in data:
+                datas = {
+                    'id':str(i.id),
+                    'urlOptionName':str(i.urlOptionName),
+                    'urlOptionUrl':str(i.urlOptionUrl),
+                    'urlOptionColor':str(i.urlOptionColor),
+                    'svg_logo':str(i.svg_logo),
+                    'logo_url':str(i.logo_url)}   
+                data_all.append(datas)
         #ser = urlsOpseriamiser(data)
-        return Response(data_all,status = status.HTTP_200_OK) 
-    except:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
+            return Response(data_all,status = status.HTTP_200_OK) 
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        data = {'message':'you are not authorized'}
+        return Response(data,status=status.HTTP_401_UNAUTHORIZED)
   
   
          
 @api_view(['PUT'])
-def upload_user_profile_picture(request):
-    if request.method == 'PUT':
-        serializer = ProfilePictureSerializer(data=request.data)
-        if serializer.is_valid():
-            data = serializer.save()
-            return data
-        else:
-            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
-    return Response(status=status.HTTP_417_EXPECTATION_FAILED)
+def upload_user_profile_picture(request,token):
+    if token_in_table(token):
+        if request.method == 'PUT':
+            serializer = ProfilePictureSerializer(data=request.data)
+            if serializer.is_valid():
+                data = serializer.save()
+                return data
+            else:
+                return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+        return Response(status=status.HTTP_417_EXPECTATION_FAILED)
+    else:
+        data = {'message':'you are not authorized'}
+        return Response(data,status=status.HTTP_401_UNAUTHORIZED)    
 
 @api_view(['GET'])
 def get_user_profile_picture(request,token):

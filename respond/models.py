@@ -17,7 +17,7 @@ User._meta.get_field('email')._unique = True
 class Users_extended(models.Model):
     id = models.UUIDField(primary_key=True,auto_created=True,default=uuid.uuid4,editable=False)
     user_id= models.OneToOneField(User,on_delete=models.CASCADE,unique=True)
-    phone = models.CharField(max_length = 24,null = True,blank = True,unique=True)
+    phone = models.CharField(max_length = 24,null = True,blank = True)
     address = models.CharField(max_length = 100,null = True,blank = True)
     job = models.CharField(max_length = 100,null = True,blank = True)
     image = models.ImageField(upload_to = 'photos',null = True,blank = True,unique = True)

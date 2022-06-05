@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-a+t-7^h3+jt^!dvs+1ukaz=l4a&1x6n#4&_*^o*j3)u944k)&f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1:8000", "localhost",'http://142.93.141.158:8080/','127.0.0.1','142.93.141.158']
+ALLOWED_HOSTS = ["127.0.0.1:8000", "localhost",'http://138.68.170.41:8080/','138.68.170.41','127.0.0.1']
 
 
 
@@ -94,17 +94,26 @@ DATABASES = {
     
 }
 """
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'myproject',
+#         'USER': 'myprojectuser',
+#         'PASSWORD': 'password',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'myproject',
-        'USER': 'myprojectuser',
-        'PASSWORD': 'password',
+        'NAME': 'websudbackendnfc',
+        'USER': 'websuduser',
+        'PASSWORD': 'dell@123$Super',
         'HOST': 'localhost',
         'PORT': '',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -155,8 +164,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'youssefouah1997@gmail.com'
-EMAIL_HOST_PASSWORD = 'esa@103google'
+EMAIL_HOST_USER = '$$$$$$'
+EMAIL_HOST_PASSWORD = '$$$'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

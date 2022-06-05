@@ -107,9 +107,9 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'websudbackendnfc',
-        'USER': 'websuduser',
-        'PASSWORD': 'dell@123$Super',
+        'NAME': 'myproject',#myproject
+        'USER': 'myprojectuser',#myprojectuser
+        'PASSWORD': 'password',#password
         'HOST': 'localhost',
         'PORT': '',
     }

@@ -17,10 +17,10 @@ User._meta.get_field('email')._unique = True
 class Users_extended(models.Model):
     id = models.UUIDField(primary_key=True,auto_created=True,default=uuid.uuid4,editable=False)
     user_id= models.OneToOneField(User,on_delete=models.CASCADE,unique=True)
-    phone = models.CharField(max_length = 24,null = True,blank = True)
+    phone = models.CharField(max_length = 24,null = True,blank = True,unique=True)
     address = models.CharField(max_length = 100,null = True,blank = True)
     job = models.CharField(max_length = 100,null = True,blank = True)
-    image = models.ImageField(upload_to = 'photos',null = True,blank = True,unique = True)
+    image = models.ImageField(upload_to = 'photos',null = True,blank = True)
     created_At = models.DateTimeField(auto_now_add=True,editable = True)
     updated_At = models.DateTimeField(auto_now=True,editable = True)
     def __str__(self):

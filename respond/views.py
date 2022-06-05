@@ -155,15 +155,15 @@ def registration_view(request):
         serializer = RegistrationSerializer(data=request.data)
         data = {}
         if serializer.is_valid():
-            account = serializer.save()
+                account = serializer.save()
             #data['response'] = message["user registered successfully"]
-            data['email'] = account.email
-            data['username'] = account.username
-            token = Token.objects.get(user=account).key
-            data['token'] = token
+                data['email'] = account.email
+                data['username'] = account.username
+                token = Token.objects.get(user=account).key
+                data['token'] = token
         else:
            #data = message["the username or the email is already exist"]
-           return Response(status=status.HTTP_208_ALREADY_REPORTED)
+           return Response(status=status.HTTP_208_ALREADY_REPORTED) 
         return Response(data,status=status.HTTP_201_CREATED)
 
 

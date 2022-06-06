@@ -23,10 +23,11 @@ def get_user_in_token(id):
         return True
     except:
         return False
-
+#show in template 
 def respond(request,board_id):
-    data = User.objects.get(username = board_id)
-    print(data.users.extended.phone)
+    id_hash = Users_extended.objects.get(id=board_id).user_id
+    data = User.objects.get(username = id_hash)
+    print(data.users_extended.phone)
     return render(request,"responder/index.html",{'data':data})
 
 #function for return db inside social_profile    

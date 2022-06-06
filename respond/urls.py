@@ -1,3 +1,4 @@
+from email import header
 from django.urls import path
 from . import views
 from django.urls import path
@@ -14,7 +15,7 @@ urlpatterns = [
      #path('rest_password_code/<int:id>/',views.rest_password_code,name = "rest_password_code"),
      path('rest_password/',views.rest_password,name = "rest_password"),
      path('add_social_profiles/token:<str:token>',views.addsocial_links,name = "add_social"),
-     path('get_user/no_url_profiles/token:<str:token>',views.get_user,name = "get_data_user"),
+     path('get_user/no_url_profiles/',views.get_user,name = "get_data_user"),
      path('get_user/url_profiles/token:<str:token>',views.get_urls_profile,name = "get_data_urls"),
      path('get_user_url_profile/token:<str:token>',views.get_user_url_profile,name = "get_data-user_and_urls"),
      path('update_url_profile/token:<str:token>',views.updatesocial_links,name = "update_social"),

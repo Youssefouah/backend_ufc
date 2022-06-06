@@ -9,12 +9,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-# Create your views here.
 from .serializers import RegistrationSerializer
 from rest_framework.authtoken.models import Token
 
 
-def get_user_in_token(id):
+def get_user_by_token(id):
     try:
         id_hash = Users_extended.objects.get(id=id).user_id
         data_user = User.objects.get(username = id_hash)
@@ -45,7 +44,7 @@ def get_datathe_user(data,data_user):
         table_all = table_users|table_user
         return table_all
 
-def token_in_table(token):
+def is_token_in_table(token):
     try:
         data = Token.objects.get(key=token)
         return True
@@ -85,7 +84,7 @@ def get_social_profile(name_data):
 @api_view(['GET', 'PUT', 'DELETE'])
 #@permission_classes([IsAuthenticated,])
 def edit_profile(request,id,token):
-    if get_user_in_token(id) == True:
+    if get_user_by_token(id) == True:
         datar = {}
         try:
             #getting data this id
@@ -128,7 +127,7 @@ def edit_profile(request,id,token):
 #delete user
 @api_view([ 'DELETE'])
 def delete_user_url_profile(request,id,token):
-    if get_user_in_token(id) == True:
+    if get_user_by_token(id) == True:
         try:
             data_users = Users_extended.objects.get(id=id)
             id_hash = data_users.user_id
@@ -286,7 +285,7 @@ this function for add social profile
 
 @api_view(['POST' ])
 def addsocial_links(request,token):
-    if token_in_table(token):
+    if is_token_in_table(token):
         if request.method == 'POST':
             serialize=Sociallinkserialiser(data=request.data)
        # print(serialize)
@@ -300,7 +299,7 @@ def addsocial_links(request,token):
 
 @api_view(['PUT' ])
 def updatesocial_links(request,token):
-    if token_in_table(token):
+    if is_token_in_table(token):
         if request.method == 'PUT':
             serialize=UpdateSocialserialiser(data=request.data)
         # print(serialize)
@@ -313,17 +312,17 @@ def updatesocial_links(request,token):
         return Response(data,status=status.HTTP_401_UNAUTHORIZED)    
 
 
-
+# this function is to get the user if authenticated 
 @api_view(['GET' ])
-def get_user(request,token):
+def get_user(request):
 
     try:
-        user = Token.objects.get(key=token).user
+        user = request.user
         datas = User.objects.get(username=user)
         data = datas.users_extended
 
     except:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     if request.method == 'GET':
         #all data for user
@@ -364,7 +363,7 @@ def get_user_url_profile(request,token):
 
 @api_view(['GET'])
 def get_urls_option(request,token):
-    if token_in_table(token):
+    if is_token_in_table(token):
         data_all =[]
         try:
             data = urlOption.objects.all()
@@ -389,7 +388,7 @@ def get_urls_option(request,token):
          
 @api_view(['PUT'])
 def upload_user_profile_picture(request,token):
-    if token_in_table(token):
+    if is_token_in_table(token):
         if request.method == 'PUT':
             serializer = ProfilePictureSerializer(data=request.data)
             if serializer.is_valid():

@@ -322,7 +322,6 @@ def get_user(request):
     #print(user)
     try:
         user = request.user
-        print(user)
         datas = User.objects.get(username=user)
         data = datas.users_extended
     except:
@@ -336,9 +335,10 @@ def get_user(request):
 
 #return user with url
 @api_view(['GET'])
-def get_urls_profile(request,token):
+@authentication_classes((TokenAuthentication,))
+def get_urls_profile(request):
     try:
-        user = Token.objects.get(key=token).user
+        user = request.user
         datas = User.objects.get(username=user)
         data = get_social_profile(datas)
         return Response(data[0],status = status.HTTP_200_OK) 
@@ -349,9 +349,10 @@ def get_urls_profile(request,token):
 
 #return user with url
 @api_view(['GET'])
-def get_full_user(request,token):
+@authentication_classes((TokenAuthentication,))
+def get_full_user(request):
     try:
-        user = Token.objects.get(key=token).user
+        user = request.user
         datas = User.objects.get(username=user)
         data = datas.users_extended
         #return table useer
@@ -406,9 +407,10 @@ def upload_user_profile_picture(request,token):
         return Response(data,status=status.HTTP_401_UNAUTHORIZED)    
 
 @api_view(['GET'])
-def get_user_profile_picture(request,token):
+@authentication_classes((TokenAuthentication,))
+def get_user_profile_picture(request):
     try:
-        user = Token.objects.get(key=token).user
+        user = request.user
         datas = User.objects.get(username=user)
         data = datas.users_extended
 

@@ -314,13 +314,15 @@ def updatesocial_links(request,token):
 
 # this function is to get the user if authenticated 
 @api_view(['GET' ])
+@permission_classes([IsAuthenticated,])
 def get_user(request):
-
+    user = request.user
+    print(user)
     try:
         user = request.user
+        print(user)
         datas = User.objects.get(username=user)
         data = datas.users_extended
-
     except:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 

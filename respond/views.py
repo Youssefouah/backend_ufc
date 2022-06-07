@@ -84,19 +84,18 @@ def get_social_profile(name_data):
 # this function for GRUD profile
 @api_view(['GET', 'PUT', 'DELETE'])
 #@permission_classes([IsAuthenticated,])
-def edit_profile(request,id,token):
-    if get_user_by_token(id) == True:
+@authentication_classes((TokenAuthentication,))
+def edit_profile(request):
         datar = {}
         try:
             #getting data this id
-            id_hash = Users_extended.objects.get(id=id).user_id
-            data_user = User.objects.get(username = id_hash)
+            #id_hash = Users_extended.objects.get(id=id).user_id
+            data_user = User.objects.get(username = request.user.username)
             data = data_user.users_extended
             token = Token.objects.get(user=data_user).key
             datar['token'] = token
-
         except :
-            return Response(status=status.HTTP_404_NOT_FOUND)   
+            return Response(status=status.HTTP_401_UNAUTHORIZED)   
     
 
         if request.method == 'GET':
@@ -117,11 +116,7 @@ def edit_profile(request,id,token):
             data.delete() 
 
         return Response(status=status.HTTP_304_NOT_MODIFIED)            
-        
-          
-    else:
-        data = {'message':'you are not authorized'}
-        return Response(data,status=status.HTTP_401_UNAUTHORIZED)         
+               
 
   
 

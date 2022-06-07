@@ -350,11 +350,11 @@ def get_full_user(request,token):
         user = Token.objects.get(key=token).user
         datas = User.objects.get(username=user)
         data = datas.users_extended
-        #return table useer
+        #return from table user
         table_user = get_datathe_user(data,datas)
         #return urls
         data_url = get_social_profile(datas)
-
+        datas['token'] = token
         table_user['url_profiles'] = data_url
         return Response(table_user,status = status.HTTP_200_OK) 
     except:

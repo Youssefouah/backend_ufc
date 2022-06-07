@@ -314,10 +314,10 @@ def updatesocial_links(request,token):
 
 # this function is to get the user if authenticated 
 @api_view(['GET' ])
-def get_user(request):
+def get_user(request,token):
 
     try:
-        user = request.user
+        user = Token.objects.get(key=token).user
         datas = User.objects.get(username=user)
         data = datas.users_extended
 

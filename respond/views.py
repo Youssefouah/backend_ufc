@@ -329,7 +329,7 @@ def get_user(request):
         table_all = get_datathe_user(data,datas)
         return Response(table_all,status = status.HTTP_200_OK)   
     return Response( status=status.HTTP_417_EXPECTATION_FAILED)
-
+# i cant see the use of this
 #return user with url
 @api_view(['GET'])
 def get_urls_profile(request,token):
@@ -345,7 +345,7 @@ def get_urls_profile(request,token):
 
 #return user with url
 @api_view(['GET'])
-def get_all_user_url_profile(request,token):
+def get_full_user(request,token):
     try:
         user = Token.objects.get(key=token).user
         datas = User.objects.get(username=user)

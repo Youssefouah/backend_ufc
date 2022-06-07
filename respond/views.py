@@ -5,12 +5,13 @@ from django.contrib.auth import authenticate
 from .serializers import *
 from .models import *
 from django.contrib.auth.models import User
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes,authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import RegistrationSerializer
 from rest_framework.authtoken.models import Token
+from rest_framework.authentication import TokenAuthentication
 
 
 def get_user_by_token(id):
@@ -314,10 +315,11 @@ def updatesocial_links(request,token):
 
 # this function is to get the user if authenticated 
 @api_view(['GET' ])
-@permission_classes([IsAuthenticated,])
+#@permission_classes([IsAuthenticated,])
+@authentication_classes((TokenAuthentication,))
 def get_user(request):
-    user = request.user
-    print(user)
+    #user = request.user
+    #print(user)
     try:
         user = request.user
         print(user)
@@ -347,7 +349,7 @@ def get_urls_profile(request,token):
 
 #return user with url
 @api_view(['GET'])
-def get_user_url_profile(request,token):
+def get_full_user(request,token):
     try:
         user = Token.objects.get(key=token).user
         datas = User.objects.get(username=user)

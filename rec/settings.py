@@ -94,27 +94,27 @@ WSGI_APPLICATION = 'rec.wsgi.application'
     
 # }
 # """
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'myproject',
-#         'USER': 'myprojectuser',
-#         'PASSWORD': 'password',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'websudbackendnfc',
-        'USER': 'websuduser',
-        'PASSWORD': 'dell@123$Super',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+     'default': {
+         'ENGINE': 'django.db.backends.postgresql',
+         'NAME': 'myproject',
+         'USER': 'myprojectuser',
+         'PASSWORD': 'password',
+         'HOST': 'localhost',
+         'PORT': '',
+     }
+ }
+
+#DATABASES = {
+  #  'default': {
+  #      'ENGINE': 'django.db.backends.postgresql',
+   #     'NAME': 'websudbackendnfc',
+    #    'USER': 'websuduser',
+   #     'PASSWORD': 'dell@123$Super',
+    #    'HOST': 'localhost',
+     #   'PORT': '',
+    #}
+#}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -182,7 +182,7 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ]
+    #'DEFAULT_PERMISSION_CLASSES': [
+     #   'rest_framework.permissions.IsAuthenticated',
+    #]
 }

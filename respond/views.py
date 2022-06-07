@@ -350,13 +350,13 @@ def get_full_user(request):
         data = datas.users_extended
         #return table useer
         table_user = get_datathe_user(data,datas)
+        table_user['token'] = token
         #return urls
         data_url = get_social_profile(datas)
-        if data_url[0] != None:
-            table_user['url_profiles'] = data_url[0]
+        if data_url != None:
+            table_user['url_profiles'] = data_url
         else:
-            table_user['url_profiles'] = None    
-        table_user['token'] = token
+            table_user['url_profiles'] = []    
         return Response(table_user,status = status.HTTP_200_OK) 
     except:
         return Response(status=status.HTTP_401_UNAUTHORIZED) 

@@ -345,7 +345,7 @@ def get_urls_profile(request,token):
 
 #return user with url
 @api_view(['GET'])
-def get_user_url_profile(request,token):
+def get_all_user_url_profile(request,token):
     try:
         user = Token.objects.get(key=token).user
         datas = User.objects.get(username=user)
@@ -355,7 +355,7 @@ def get_user_url_profile(request,token):
         #return urls
         data_url = get_social_profile(datas)
 
-        table_user['url_profiles'] = data_url[0]
+        table_user['url_profiles'] = data_url
         return Response(table_user,status = status.HTTP_200_OK) 
     except:
         return Response(status=status.HTTP_404_NOT_FOUND) 

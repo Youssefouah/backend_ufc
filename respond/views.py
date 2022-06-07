@@ -122,10 +122,10 @@ def edit_profile(request):
 
 #delete user
 @api_view([ 'DELETE'])
-def delete_user_url_profile(request,id,token):
-    if get_user_by_token(id) == True:
+@authentication_classes((TokenAuthentication,))
+def delete_user_url_profile(request):
         try:
-            data_users = Users_extended.objects.get(id=id)
+            data_users = Users_extended.objects.get(user_id=request.user)
             id_hash = data_users.user_id
             data_user = User.objects.get(username = id_hash)
             token = Token.objects.get(user=data_user)
@@ -138,10 +138,7 @@ def delete_user_url_profile(request,id,token):
           #  print(i.id) 
             return Response(status=status.HTTP_200_OK)
         except:
-             return Response(status=status.HTTP_404_NOT_FOUND)
-    else:
-        data = {'message':'you are not authorized'}
-        return Response(data,status=status.HTTP_401_UNAUTHORIZED)     
+             Response(status=status.HTTP_401_UNAUTHORIZED)      
 
 
 
@@ -339,7 +336,7 @@ def get_urls_profile(request):
         return Response(data[0],status = status.HTTP_200_OK) 
 
     except:
-        return Response(status=status.HTTP_404_NOT_FOUND) 
+        return Response(status=status.HTTP_401_UNAUTHORIZED) 
           
 
 #return user with url
@@ -349,21 +346,24 @@ def get_full_user(request):
     try:
         user = request.user
         datas = User.objects.get(username=user)
+        token = Token.objects.get(user=user).key
         data = datas.users_extended
         #return table useer
         table_user = get_datathe_user(data,datas)
         #return urls
         data_url = get_social_profile(datas)
-
-        table_user['url_profiles'] = data_url[0]
+        if data_url[0] != None:
+            table_user['url_profiles'] = data_url[0]
+        else:
+            table_user['url_profiles'] = None    
+        table_user['token'] = token
         return Response(table_user,status = status.HTTP_200_OK) 
     except:
-        return Response(status=status.HTTP_404_NOT_FOUND) 
+        return Response(status=status.HTTP_401_UNAUTHORIZED) 
 
 
 @api_view(['GET'])
-def get_urls_option(request,token):
-    if is_token_in_table(token):
+def get_urls_option(request):
         data_all =[]
         try:
             data = urlOption.objects.all()
@@ -380,9 +380,6 @@ def get_urls_option(request,token):
             return Response(data_all,status = status.HTTP_200_OK) 
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
-    else:
-        data = {'message':'you are not authorized'}
-        return Response(data,status=status.HTTP_401_UNAUTHORIZED)
   
   
          

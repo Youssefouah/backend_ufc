@@ -354,7 +354,7 @@ def get_full_user(request,token):
         table_user = get_datathe_user(data,datas)
         #return urls
         data_url = get_social_profile(datas)
-        datas['token'] = token
+        table_user['token'] = token
         table_user['url_profiles'] = data_url
         return Response(table_user,status = status.HTTP_200_OK) 
     except:

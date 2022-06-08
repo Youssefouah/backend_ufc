@@ -277,6 +277,7 @@ this function for add social profile
 """
 
 @api_view(['POST' ])
+@authentication_classes((TokenAuthentication,))
 def addsocial_links(request,token):
     if is_token_in_table(token):
         if request.method == 'POST':
@@ -291,6 +292,7 @@ def addsocial_links(request,token):
         return Response(data,status=status.HTTP_401_UNAUTHORIZED)            
 
 @api_view(['PUT' ])
+@authentication_classes((TokenAuthentication,))
 def updatesocial_links(request,token):
     if is_token_in_table(token):
         if request.method == 'PUT':
@@ -307,11 +309,9 @@ def updatesocial_links(request,token):
 
 # this function is to get the user if authenticated 
 @api_view(['GET' ])
-#@permission_classes([IsAuthenticated,])
 @authentication_classes((TokenAuthentication,))
 def get_user(request):
-    #user = request.user
-    #print(user)
+   
     try:
         user = request.user
         datas = User.objects.get(username=user)

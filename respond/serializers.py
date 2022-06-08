@@ -230,7 +230,7 @@ class Sociallinkserialiser(serializers.ModelSerializer):
 		user = User.objects.get(username=userid)
 		data = social_profile(socialProfileUsername = self.validated_data['socialProfileUsername'],
 		userurl_id = user,urlOptionId = self.validated_data['urlOptionId'])	
-		data.save() 
+		data.save()
 		return data
 
 class UpdateSocialserialiser(serializers.ModelSerializer):

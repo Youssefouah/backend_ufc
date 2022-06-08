@@ -363,7 +363,8 @@ def get_full_user(request):
 
 
 @api_view(['GET'])
-def get_urls_option(request):
+@authentication_classes((TokenAuthentication,))
+def get_link_options(request):
         data_all =[]
         try:
             data = urlOption.objects.all()

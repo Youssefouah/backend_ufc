@@ -278,8 +278,8 @@ this function for add social profile
 
 @api_view(['POST' ])
 @authentication_classes((TokenAuthentication,))
-def addsocial_links(request,token):
-    if is_token_in_table(token):
+def addsocial_links(request):
+   
         if request.method == 'POST':
             serialize=Sociallinkserialiser(data=request.data)
        # print(serialize)
@@ -287,10 +287,7 @@ def addsocial_links(request,token):
                 serialize.save()
                 return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_417_EXPECTATION_FAILED)  
-    else:
-        data = {'message':'you are not authorized'}
-        return Response(data,status=status.HTTP_401_UNAUTHORIZED)            
-
+   
 @api_view(['PUT' ])
 @authentication_classes((TokenAuthentication,))
 def updatesocial_links(request,token):

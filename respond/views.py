@@ -374,8 +374,28 @@ def get_link_options(request):
                     'svg_logo':str(i.svg_logo),
                     'logo_url':str(i.logo_url)}   
                 data_all.append(datas)
-        #ser = urlsOpseriamiser(data)
             return Response(data_all,status = status.HTTP_200_OK) 
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+  
+  
+@api_view(['GET'])
+@authentication_classes((TokenAuthentication,))
+def get_user_social_urls(request):
+        all_data =[]
+        try:
+            data = social_profile.objects.all()
+            for i in data:
+                datas = {
+                    'id':str(i.id),
+                    'userurl_id':str(i.userurl_id),
+                    'urlOptionId':str(i.urlOptionId),
+                    'socialProfileUsername':str(i.socialProfileUsername),
+                    'created_at':str(i.created_at),
+                    'updated_at':str(i.updated_at)}   
+                all_data.append(datas)
+       
+            return Response(all_data,status = status.HTTP_200_OK) 
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
   
@@ -408,24 +428,6 @@ def get_user_profile_picture(request):
 
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
-
-
-
-"""
-    #delete data in table links
-    if request.method == 'DELETE':
-        for i in data:
-            i.delete()  
-"""
-"""
-    try:
-        id_hash = Users_extended.objects.get(id=id).user_id
-        print(id_hash)
-        data = urlOption.objects.all.filter(userurl_id = id_hash)
-    except:
-        return Response(status=status.HTTP_204_NO_CONTENT)
-"""
 
 
 

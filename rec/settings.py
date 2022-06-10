@@ -94,25 +94,25 @@ WSGI_APPLICATION = 'rec.wsgi.application'
     
 # }
 # """
-#DATABASES = {
-    # 'default': {
-        # 'ENGINE': 'django.db.backends.postgresql',
-       #  'NAME': 'myproject',
-      #   'USER': 'myprojectuser',
-     #    'PASSWORD': 'password',
-    #     'HOST': 'localhost',
-   #      'PORT': '',
-  #   }
- #}
+# DATABASES = {
+#      'default': {
+#          'ENGINE': 'django.db.backends.postgresql',
+#          'NAME': 'myproject',
+#          'USER': 'myprojectuser',
+#          'PASSWORD': 'password',
+#          'HOST': 'localhost',
+#          'PORT': '',
+#      }
+#  }
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'websudbackendnfc',
-        'USER': 'websuduser',
-        'PASSWORD': 'dell@123$Super',
-        'HOST': 'localhost',
-        'PORT': '',
+   'default': {
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': 'websudbackendnfc',
+       'USER': 'websuduser',
+       'PASSWORD': 'dell@123$Super',
+       'HOST': 'localhost',
+       'PORT': '',
     }
 }
 

@@ -245,15 +245,15 @@ def rest_password_email(request):
 
 
 #this function for get is code verfied or not
-@api_view(['POST', ])
-def rest_password_code(request,id):
-    if request.method == 'POST':
-        serializer = rest_serializer_2(data=request.data)
-        if serializer.is_valid():
-            code = serializer.validation()
-            return Response(data=code)
-        else:
-            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)    
+# @api_view(['POST', ])
+# def rest_password_code(request,id):
+#     if request.method == 'POST':
+#         serializer = rest_serializer_2(data=request.data)
+#         if serializer.is_valid():
+#             code = serializer.validation()
+#             return Response(data=code)
+#         else:
+#             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)    
 
 #this function for rest password
 @api_view(['POST', ])

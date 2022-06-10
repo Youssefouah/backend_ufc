@@ -277,8 +277,9 @@ this function for add social profile
 """
 
 @api_view(['POST' ])
-def addsocial_links(request,token):
-    if is_token_in_table(token):
+@authentication_classes((TokenAuthentication,))
+def addsocial_links(request):
+   
         if request.method == 'POST':
             serialize=Sociallinkserialiser(data=request.data)
        # print(serialize)
@@ -286,11 +287,9 @@ def addsocial_links(request,token):
                 serialize.save()
                 return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_417_EXPECTATION_FAILED)  
-    else:
-        data = {'message':'you are not authorized'}
-        return Response(data,status=status.HTTP_401_UNAUTHORIZED)            
-
+   
 @api_view(['PUT' ])
+@authentication_classes((TokenAuthentication,))
 def updatesocial_links(request,token):
     if is_token_in_table(token):
         if request.method == 'PUT':
@@ -307,11 +306,9 @@ def updatesocial_links(request,token):
 
 # this function is to get the user if authenticated 
 @api_view(['GET' ])
-#@permission_classes([IsAuthenticated,])
 @authentication_classes((TokenAuthentication,))
 def get_user(request):
-    #user = request.user
-    #print(user)
+   
     try:
         user = request.user
         datas = User.objects.get(username=user)
@@ -363,7 +360,8 @@ def get_full_user(request):
 
 
 @api_view(['GET'])
-def get_urls_option(request):
+@authentication_classes((TokenAuthentication,))
+def get_link_options(request):
         data_all =[]
         try:
             data = urlOption.objects.all()
@@ -376,8 +374,28 @@ def get_urls_option(request):
                     'svg_logo':str(i.svg_logo),
                     'logo_url':str(i.logo_url)}   
                 data_all.append(datas)
-        #ser = urlsOpseriamiser(data)
             return Response(data_all,status = status.HTTP_200_OK) 
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+  
+  
+@api_view(['GET'])
+@authentication_classes((TokenAuthentication,))
+def get_user_social_urls(request):
+        all_data =[]
+        try:
+            data = social_profile.objects.all()
+            for i in data:
+                datas = {
+                    'id':str(i.id),
+                    'userurl_id':str(i.userurl_id),
+                    'urlOptionId':str(i.urlOptionId),
+                    'socialProfileUsername':str(i.socialProfileUsername),
+                    'created_at':str(i.created_at),
+                    'updated_at':str(i.updated_at)}   
+                all_data.append(datas)
+       
+            return Response(all_data,status = status.HTTP_200_OK) 
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
   
@@ -410,24 +428,6 @@ def get_user_profile_picture(request):
 
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
-
-
-
-"""
-    #delete data in table links
-    if request.method == 'DELETE':
-        for i in data:
-            i.delete()  
-"""
-"""
-    try:
-        id_hash = Users_extended.objects.get(id=id).user_id
-        print(id_hash)
-        data = urlOption.objects.all.filter(userurl_id = id_hash)
-    except:
-        return Response(status=status.HTTP_204_NO_CONTENT)
-"""
 
 
 

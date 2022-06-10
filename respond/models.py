@@ -42,7 +42,6 @@ class urlOption(models.Model):
 #ids for users  and urls
 class social_profile(models.Model):
     id = models.UUIDField(primary_key=True,auto_created=True, default=uuid.uuid4, editable=False)
-    #id = models.autuui(primary_key=True)
     userurl_id = models.ForeignKey(User,on_delete=models.CASCADE,null = True)
     urlOptionId = models.ForeignKey(urlOption,on_delete=models.CASCADE,null = True)
     socialProfileUsername = models.CharField(max_length = 85,blank=True,null=True)

@@ -9,7 +9,8 @@ urlpatterns = [
      path('page_main_view/<str:board_id>/',views.respond,name = 'repond'),
      # auth paths
      path('signup/',views.registration_view), 
-     path('login/',views.login,name = "login"), 
+     path('login/',views.login_in,name = "login"), 
+     path('logout/',views.logout_out,name = "logout"), 
      # security paths
      path('change_password/',views.change_password,name = "forgot_password"),
      path('rest_password_by_email/',views.rest_password_email,name = "rest_password_email"),

@@ -1,7 +1,7 @@
 from email import message
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,login,logout
 from .serializers import *
 from .models import *
 from django.contrib.auth.models import User
@@ -12,6 +12,7 @@ from rest_framework import status
 from .serializers import RegistrationSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
+
 
 
 def get_user_by_token(id):
@@ -169,7 +170,7 @@ def registration_view(request):
 #this function for login
 #return {"token":token,"username":username,"email":email,"id":id,}
 @api_view(['POST', ])
-def login(request):
+def login_in(request):
     if request.method == 'POST':
         serializer = LoginSerializer(data=request.data)
         datas = {}
@@ -200,6 +201,7 @@ def login(request):
                  return Response(status=status.HTTP_401_UNAUTHORIZED)
 
             else:
+                 login(request,user)
                  token = Token.objects.get(user_id= email.id).key
                  datas['token'] = token
                  datas['email'] = email.email
@@ -216,10 +218,12 @@ def login(request):
         else:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)                 
 
-
+def logout_out(request):
+    logout(request)
 
 #this function for forgot password :give username and old password and new password
 @api_view(['PUT', ])
+#@permission_classes((IsAuthenticated, ))
 def change_password(request):
 
     if request.method == 'PUT':

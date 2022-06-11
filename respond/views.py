@@ -225,15 +225,17 @@ def logout_out(request):
 @api_view(['PUT', ])
 #@permission_classes((IsAuthenticated, ))
 def change_password(request):
+    user = request.user
+    if user.is_authenticated:
+        if request.method == 'PUT':
+            serializer=forgot_rest_serializer(data=request.data)
 
-    if request.method == 'PUT':
-        serializer=forgot_rest_serializer(data=request.data)
+        if serializer.is_valid():
+            msg = serializer.save()
+            return msg
 
-    if serializer.is_valid():
-        msg = serializer.save()
-        return msg
-
-    return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+        return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+    return Response(status=status.HTTP_401_UNAUTHORIZED)    
 
 #this function for sending email to user givin email
 @api_view(['POST', ])

@@ -51,6 +51,18 @@ class social_profile(models.Model):
     def __str__(self):
         return str(self.id)
 
+
+class stats_table(models.Model):
+    id = models.UUIDField(primary_key=True,auto_created=True, default=uuid.uuid4, editable=False)
+    user_id = models.ForeignKey(User,on_delete=models.CASCADE,null = True)
+    url_id = models.ForeignKey(urlOption,on_delete=models.CASCADE,null = True)
+    number_of_times_visited = models.IntegerField(default = 0)
+    number_of_times_shared = models.IntegerField(default = 0)
+    number_of_times_clicked = models.IntegerField(default = 0)
+    number_of_times_liked = models.IntegerField(default = 0)
+    first_visit_date = models.DateTimeField(auto_now_add=True)
+    last_visit_date = models.DateTimeField(auto_now=True)
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:

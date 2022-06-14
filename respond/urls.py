@@ -18,7 +18,7 @@ urlpatterns = [
      path('rest_password/',views.rest_password,name = "rest_password"),
      # add data paths
      path('add_user_social_profile/',views.addsocial_links,name = "add_social"),
-     path('upload_user_profile_picture/token:<str:token>',views.upload_user_profile_picture,name = "upload_user_profile_picture"),
+     path('upload_user_profile_picture/',views.upload_user_profile_picture,name = "upload_user_profile_picture"),
      # update data paths
      path('edit_profile/',views.edit_profile),
      path('update_url_profile/token:<str:token>',views.updatesocial_links,name = "update_social"),

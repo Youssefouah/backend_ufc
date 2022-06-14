@@ -88,14 +88,14 @@ def get_social_profile(name_data):
 @authentication_classes((TokenAuthentication,))
 def edit_profile(request):
         datar = {}
-        try:
+        if request.user.is_authenticated:
             #getting data this id
             #id_hash = Users_extended.objects.get(id=id).user_id
             data_user = User.objects.get(username = request.user.username)
             data = data_user.users_extended
             token = Token.objects.get(user=data_user).key
             datar['token'] = token
-        except :
+        else :
             return Response(status=status.HTTP_401_UNAUTHORIZED)   
     
 
@@ -125,7 +125,7 @@ def edit_profile(request):
 @api_view([ 'DELETE'])
 @authentication_classes((TokenAuthentication,))
 def delete_user_url_profile(request):
-        try:
+        if request.user.is_authenticated:
             data_users = Users_extended.objects.get(user_id=request.user)
             id_hash = data_users.user_id
             data_user = User.objects.get(username = id_hash)
@@ -138,7 +138,7 @@ def delete_user_url_profile(request):
         #for i in data_profile:
           #  print(i.id) 
             return Response(status=status.HTTP_200_OK)
-        except:
+        else:
              Response(status=status.HTTP_401_UNAUTHORIZED)      
 
 
@@ -223,7 +223,7 @@ def logout_out(request):
 
 #this function for forgot password :give username and old password and new password
 @api_view(['PUT', ])
-#@permission_classes((IsAuthenticated, ))
+@authentication_classes((TokenAuthentication,))
 def change_password(request):
     user = request.user
     if user.is_authenticated:
@@ -239,8 +239,9 @@ def change_password(request):
 
 #this function for sending email to user givin email
 @api_view(['POST', ])
+@authentication_classes((TokenAuthentication,))
 def rest_password_email(request):
-    if request.method == 'POST':
+    if request.user.is_authenticated:
         serializer = rest_serializer(data=request.data)
         data = {}
         if serializer.is_valid():
@@ -248,6 +249,8 @@ def rest_password_email(request):
             return Response(data = str(id),status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)        
 
 
 #this function for get is code verfied or not
@@ -263,14 +266,17 @@ def rest_password_email(request):
 
 #this function for rest password
 @api_view(['POST', ])
+@authentication_classes((TokenAuthentication,))
 def rest_password(request):
-    if request.method == 'POST':
+    if request.user.is_authenticated:
         serializer = rest_serializer_3(data=request.data)
         if serializer.is_valid():
             code = serializer.change()
             return code
         else:
-            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)    
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)   
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)         
         
             
 """
@@ -285,20 +291,21 @@ this function for add social profile
 @api_view(['POST' ])
 @authentication_classes((TokenAuthentication,))
 def addsocial_links(request):
-   
-        if request.method == 'POST':
+        if request.user.is_authenticated:
             serialize=Sociallinkserialiser(data=request.data)
        # print(serialize)
             if serialize.is_valid() :
                 serialize.save()
                 return Response(status=status.HTTP_200_OK)
-            return Response(status=status.HTTP_417_EXPECTATION_FAILED)  
+            return Response(status=status.HTTP_417_EXPECTATION_FAILED)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)      
    
 @api_view(['PUT' ])
 @authentication_classes((TokenAuthentication,))
 def updatesocial_links(request,token):
     if is_token_in_table(token):
-        if request.method == 'PUT':
+        if request.user.is_authenticated:
             serialize=UpdateSocialserialiser(data=request.data)
         # print(serialize)
             if serialize.is_valid() :
@@ -306,8 +313,7 @@ def updatesocial_links(request,token):
                 return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_417_EXPECTATION_FAILED)
     else:
-        data = {'message':'you are not authorized'}
-        return Response(data,status=status.HTTP_401_UNAUTHORIZED)    
+        return Response(status=status.HTTP_401_UNAUTHORIZED)    
 
 
 # this function is to get the user if authenticated 
@@ -315,11 +321,11 @@ def updatesocial_links(request,token):
 @authentication_classes((TokenAuthentication,))
 def get_user(request):
    
-    try:
+    if request.user.is_authenticated:
         user = request.user
         datas = User.objects.get(username=user)
         data = datas.users_extended
-    except:
+    else:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     if request.method == 'GET':
@@ -332,13 +338,13 @@ def get_user(request):
 @api_view(['GET'])
 @authentication_classes((TokenAuthentication,))
 def get_urls_profile(request):
-    try:
+    if request.user.is_authenticated:
         user = request.user
         datas = User.objects.get(username=user)
         data = get_social_profile(datas)
         return Response(data[0],status = status.HTTP_200_OK) 
 
-    except:
+    else:
         return Response(status=status.HTTP_401_UNAUTHORIZED) 
           
 
@@ -346,7 +352,7 @@ def get_urls_profile(request):
 @api_view(['GET'])
 @authentication_classes((TokenAuthentication,))
 def get_full_user(request):
-    try:
+    if request.user.is_authenticated:
         user = request.user
         datas = User.objects.get(username=user)
         token = Token.objects.get(user=user).key
@@ -361,7 +367,7 @@ def get_full_user(request):
         else:
             table_user['url_profiles'] = []    
         return Response(table_user,status = status.HTTP_200_OK) 
-    except:
+    else:
         return Response(status=status.HTTP_401_UNAUTHORIZED) 
 
 
@@ -369,7 +375,7 @@ def get_full_user(request):
 @authentication_classes((TokenAuthentication,))
 def get_link_options(request):
         data_all =[]
-        try:
+        if request.user.is_authenticated:
             data = urlOption.objects.all()
             for i in data:
                 datas = {
@@ -381,7 +387,7 @@ def get_link_options(request):
                     'logo_url':str(i.logo_url)}   
                 data_all.append(datas)
             return Response(data_all,status = status.HTTP_200_OK) 
-        except:
+        else:
             return Response(status=status.HTTP_404_NOT_FOUND)
   
   
@@ -389,7 +395,7 @@ def get_link_options(request):
 @authentication_classes((TokenAuthentication,))
 def get_user_social_urls(request):
         all_data =[]
-        try:
+        if request.user.is_authenticated:
             data = social_profile.objects.all()
             for i in data:
                 datas = {
@@ -402,14 +408,15 @@ def get_user_social_urls(request):
                 all_data.append(datas)
        
             return Response(all_data,status = status.HTTP_200_OK) 
-        except:
+        else:
             return Response(status=status.HTTP_404_NOT_FOUND)
   
   
          
 @api_view(['PUT'])
-def upload_user_profile_picture(request,token):
-    if is_token_in_table(token):
+@authentication_classes((TokenAuthentication,))
+def upload_user_profile_picture(request):
+    if request.user.is_authenticated:
         if request.method == 'PUT':
             serializer = ProfilePictureSerializer(data=request.data)
             if serializer.is_valid():
@@ -419,21 +426,22 @@ def upload_user_profile_picture(request,token):
                 return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response(status=status.HTTP_417_EXPECTATION_FAILED)
     else:
-        data = {'message':'you are not authorized'}
-        return Response(data,status=status.HTTP_401_UNAUTHORIZED)    
+        return Response(status=status.HTTP_401_UNAUTHORIZED)    
+
+
 
 @api_view(['GET'])
 @authentication_classes((TokenAuthentication,))
 def get_user_profile_picture(request):
-    try:
+    if request.user.is_authenticated:
         user = request.user
         datas = User.objects.get(username=user)
         data = datas.users_extended
 
         return Response(data.image.url,status = status.HTTP_200_OK)
 
-    except:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 

@@ -294,7 +294,7 @@ def addsocial_links(request):
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)      
    
-@api_view(['UPDATE' ])
+@api_view(['POST' ])
 @authentication_classes((TokenAuthentication,))
 def updatesocial_links(request):
         if request.user.is_authenticated:

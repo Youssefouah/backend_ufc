@@ -294,15 +294,15 @@ def addsocial_links(request):
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)      
    
-@api_view(['PUT' ])
+@api_view(['UPDATE' ])
 @authentication_classes((TokenAuthentication,))
 def updatesocial_links(request):
         if request.user.is_authenticated:
-            serialize=UpdateSocialserialiser(data=request.data)
-        # print(serialize)
-            if serialize.is_valid() :
-                serialize.update()
-                return Response(status=status.HTTP_200_OK)
+            try:
+                social_profile.objects.filter(user_id=request.user.id).update(request.data)
+            except:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_401_UNAUTHORIZED)    
 
 

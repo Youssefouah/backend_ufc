@@ -383,7 +383,7 @@ def get_link_options(request):
   
 @api_view(['GET'])
 @authentication_classes((TokenAuthentication,))
-def get_user_social_urls(request):
+def get_all_url_profiles(request):
         all_data =[]
         if request.user.is_authenticated:
             data = social_profile.objects.all()

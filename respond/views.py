@@ -299,7 +299,7 @@ def addsocial_links(request):
 def updatesocial_links(request):
         if request.user.is_authenticated:
             try:
-                social_profile.objects.filter(user_id=request.user.id).update(request.data)
+                social_profile.objects.filter(user_id=request.user.id).update( urlOptionId=request.data['urlOptionId'], socialProfileUsername=request.data['socialProfileUsername'] )
             except:
                 return Response(status=status.HTTP_404_NOT_FOUND)
             return Response(status=status.HTTP_200_OK)

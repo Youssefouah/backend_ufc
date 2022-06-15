@@ -21,7 +21,7 @@ urlpatterns = [
      path('upload_user_profile_picture/',views.upload_user_profile_picture,name = "upload_user_profile_picture"),
      # update data paths
      path('edit_profile/',views.edit_profile),
-     path('update_url_profile/token:<str:token>',views.updatesocial_links,name = "update_social"),
+     path('update_url_profile/',views.updatesocial_links,name = "update_social"),
      # get data paths
      path('get_bare_user/',views.get_user,name = "get_data_user"),
      path('get_full_user/',views.get_full_user,name = "get_data-user_and_urls"),

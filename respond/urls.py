@@ -31,5 +31,5 @@ urlpatterns = [
      path('get_user_social_urls/',views.get_user_social_urls,name = "get_data_urls"),
      path('get_link_options/',views.get_link_options,name = "get_all_link_options"),
      # delete data paths
-     path('delete_user_social_profiles/',views.delete_user_url_profile,name = "delete_user_url_profile"),
+     path('delete_user_social_profiles/<str:id>',views.delete_user_url_profile,name = "delete_user_url_profile"),
 ]

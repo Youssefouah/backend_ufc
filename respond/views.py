@@ -81,7 +81,16 @@ def get_social_profile(name_data):
         return None
 
 
-
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def get_social_url_profile(request):
+    if request.user.is_authenticated:
+        data = get_social_profile(request.user)
+        return Response(data,status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+            
 # this function for GRUD profile
 @api_view(['GET', 'PUT', 'DELETE'])
 #@permission_classes([IsAuthenticated,])

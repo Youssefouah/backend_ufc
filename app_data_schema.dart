@@ -4,6 +4,23 @@
 /// TODO: [name='encrypt settings variables']
 
 
+//function for gert social_profile
+//get_social_url_profile
+
+//return : 'id','socialProfileUsername','urlOptionId',urlOptionName','urlOptionUrl','urlOptionColor','svg_logo','logo_url'
+
+
+
+
+
+
+
+
+
+
+
+
+
 //not finish
 //// when you are done . add another table name it stats_table it should contain
 /// userId

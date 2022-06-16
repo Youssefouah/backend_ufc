@@ -124,22 +124,15 @@ def edit_profile(request):
 #delete user
 @api_view([ 'DELETE'])
 @authentication_classes((TokenAuthentication,))
-def delete_user_url_profile(request):
-        if request.user.is_authenticated:
-            data_users = Users_extended.objects.get(user_id=request.user)
-            id_hash = data_users.user_id
-            data_user = User.objects.get(username = id_hash)
-            token = Token.objects.get(user=data_user)
-            data_profile = social_profile.objects.all().filter(userurl_id=id_hash)
-            data_profile.delete()
-            data_user.delete()
-            token.delete()
-            data_users.delete()
-        #for i in data_profile:
-          #  print(i.id) 
+def delete_user_url_profile(request,id):
+        # delete data in table social_profile by id
+        data = social_profile.objects.get(id=id)
+        if data.delete():
             return Response(status=status.HTTP_200_OK)
-        else:
-             Response(status=status.HTTP_401_UNAUTHORIZED)      
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+             
 
 
 
@@ -301,7 +294,7 @@ def addsocial_links(request):
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)      
    
-@api_view(['PUT' ])
+@api_view(['POST' ])
 @authentication_classes((TokenAuthentication,))
 def updatesocial_links(request):
        if request.user.is_authenticated:
@@ -313,6 +306,7 @@ def updatesocial_links(request):
             return Response(status=status.HTTP_417_EXPECTATION_FAILED)
        else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)    
+
 
 
 # this function is to get the user if authenticated 
@@ -392,7 +386,7 @@ def get_link_options(request):
   
 @api_view(['GET'])
 @authentication_classes((TokenAuthentication,))
-def get_user_social_urls(request):
+def get_all_url_profiles(request):
         all_data =[]
         if request.user.is_authenticated:
             data = social_profile.objects.all()

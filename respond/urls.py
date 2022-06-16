@@ -28,8 +28,8 @@ urlpatterns = [
      path('get_user_profile_picture/',views.get_user_profile_picture,name = "uget_user_profile_picture"),
      path('get_user/single_url_profile/',views.get_urls_profile,name = "get_data_urls"),
      path('get_social_profile/username:<str:username>',views.get_social_profile,name = "get_data_urls"),
-     path('get_user_social_urls/',views.get_user_social_urls,name = "get_data_urls"),
+     path('get_all_url_profiles/',views.get_all_url_profiles,name = "get_data_urls"),
      path('get_link_options/',views.get_link_options,name = "get_all_link_options"),
      # delete data paths
-     path('delete_user_social_profiles/',views.delete_user_url_profile,name = "delete_user_url_profile"),
+     path('delete_user_social_profiles/<str:id>',views.delete_user_url_profile,name = "delete_user_url_profile"),
 ]

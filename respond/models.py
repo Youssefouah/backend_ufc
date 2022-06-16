@@ -1,6 +1,7 @@
 from distutils.command.upload import upload
 from email.policy import default
 import numbers
+from pickle import FALSE
 import uuid
 #from turtle import update
 from django.conf import settings
@@ -42,8 +43,8 @@ class urlOption(models.Model):
 #ids for users  and urls
 class social_profile(models.Model):
     id = models.UUIDField(primary_key=True,auto_created=True, default=uuid.uuid4, editable=False)
-    userurl_id = models.ForeignKey(User,on_delete=models.CASCADE,null = True)
-    urlOptionId = models.ForeignKey(urlOption,on_delete=models.CASCADE,null = True)
+    userurl_id = models.ForeignKey(User,on_delete=models.CASCADE,null = False)
+    urlOptionId = models.ForeignKey(urlOption,on_delete=models.CASCADE,null = False,editable= True)
     socialProfileUsername = models.CharField(max_length = 85,blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

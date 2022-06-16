@@ -303,17 +303,16 @@ def addsocial_links(request):
    
 @api_view(['PUT' ])
 @authentication_classes((TokenAuthentication,))
-def updatesocial_links(request,token):
-    if is_token_in_table(token):
-        if request.user.is_authenticated:
+def updatesocial_links(request):
+       if request.user.is_authenticated:
             serialize=UpdateSocialserialiser(data=request.data)
         # print(serialize)
             if serialize.is_valid() :
                 serialize.update()
                 return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_417_EXPECTATION_FAILED)
-    else:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)    
+            return Response(status=status.HTTP_417_EXPECTATION_FAILED)
+       else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)    
 
 
 # this function is to get the user if authenticated 

@@ -398,7 +398,7 @@ def get_link_options(request):
 def get_all_url_profiles(request):
         all_data =[]
         if request.user.is_authenticated:
-            data = social_profile.objects.all()
+            data = social_profile.objects.all.filter(userurl_id= request.user)
             for i in data:
                 datas = {
                     'id':str(i.id),

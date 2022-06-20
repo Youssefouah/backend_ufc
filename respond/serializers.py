@@ -1,3 +1,4 @@
+import base64
 import code
 from dataclasses import field
 from unittest.util import _MAX_LENGTH
@@ -11,6 +12,7 @@ from django.core.mail import send_mail
 #from django.contrib.auth.hashers import check_password
 from .signale import Signal_code
 import random
+from django.core.files.base import ContentFile
 
 
 #code = {}
@@ -278,9 +280,10 @@ class ProfilePictureSerializer(serializers.ModelSerializer):
 		#userid =self.validated_data['id']
 		image = self.validated_data['image']
 		user = Users_extended.objects.get(id=userid)
+		your_file = ContentFile(base64.b64decode(image))
 		if user.image:
 			user.image.delete()	
-		user.image = image
+		user.image = your_file
 		user.save()
 		return Response(status=status.HTTP_200_OK)
 	    		

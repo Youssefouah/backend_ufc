@@ -427,7 +427,7 @@ def upload_user_profile_picture(request):
             if serializer.is_valid():
                 userid = Users_extended.objects.get(user_id=user)
                 data = serializer.save(userid.id)
-                return Response(status = status.HTTP_200_OK)
+                return data
             else:
                 return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response(status=status.HTTP_417_EXPECTATION_FAILED)
@@ -439,15 +439,15 @@ def upload_user_profile_picture(request):
 @api_view(['GET'])
 @authentication_classes((TokenAuthentication,))
 def get_user_profile_picture(request):
-    if request.user.is_authenticated:
+    #if request.user.is_authenticated:
         user = request.user
         datas = User.objects.get(username=user)
         data = datas.users_extended
 
         return Response({'image':str(data.image.url)},status = status.HTTP_200_OK)
 
-    else:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+    # else:
+    #     return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 

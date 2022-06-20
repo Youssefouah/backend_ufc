@@ -22,7 +22,7 @@ class Users_extended(models.Model):
     phone = models.CharField(max_length = 24,null = True,blank = True)
     address = models.CharField(max_length = 100,null = True,blank = True)
     job = models.CharField(max_length = 100,null = True,blank = True)
-    image = models.FileField(upload_to = 'photos',null = True,blank = True)
+    image = models.FileField(upload_to = 'photos',null = True,blank = True,default = 'photos/téléchargement.jpeg')
     created_At = models.DateTimeField(auto_now_add=True,editable = True)
     updated_At = models.DateTimeField(auto_now=True,editable = True)
     def __str__(self):
@@ -44,8 +44,8 @@ class urlOption(models.Model):
 #ids for users  and urls
 class social_profile(models.Model):
     id = models.UUIDField(primary_key=True,auto_created=True, default=uuid.uuid4, editable=False)
-    userurl_id = models.ForeignKey(User,on_delete=models.CASCADE,null = False)
-    urlOptionId = models.ForeignKey(urlOption,on_delete=models.CASCADE,null = False,editable= True)
+    userurl_id = models.ForeignKey(User,on_delete=models.CASCADE,null = False,default=1)
+    urlOptionId = models.ForeignKey(urlOption,on_delete=models.CASCADE,null = False,editable= False,default=1)
     socialProfileUsername = models.CharField(max_length = 85,blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

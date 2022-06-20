@@ -277,16 +277,19 @@ class ProfilePictureSerializer(serializers.ModelSerializer):
 		fields = ['image']
 	
 	def save(self,userid):
-		#userid =self.validated_data['id']
+		#userid =self.validated_data['id
+		#userid =self.validated_data['id
 		image = self.validated_data['image']
 		user = Users_extended.objects.get(id=userid)
-		your_file = ContentFile(base64.b64decode(image))
+		your_file = base64.b64decode(image)
 		if user.image:
 			user.image.delete()	
 		user.image = your_file
 		user.save()
 		return Response(status=status.HTTP_200_OK)
-	    		
+		
+
+
 
 
 

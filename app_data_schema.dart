@@ -1,10 +1,15 @@
+var _Urgent =
+    'please specify the directory where the user profile pictures are stored in';
+/// TODO: please specify the routes for reset password
+
+
 /// TODO: [name='fix cascades in tables']
 /// TODO: [name='implement Stats Table']
 /// TODO: [name='specify reset password steps']
 /// TODO: [name='encrypt settings variables']
 
 
-//function for gert social_profile
+//function for get social_profile
 //get_social_url_profile
 
 //return : 'id','socialProfileUsername','urlOptionId',urlOptionName','urlOptionUrl','urlOptionColor','svg_logo','logo_url'

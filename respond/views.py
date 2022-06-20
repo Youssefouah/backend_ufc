@@ -420,12 +420,14 @@ def get_all_url_profiles(request):
 @api_view(['PUT'])
 @authentication_classes((TokenAuthentication,))
 def upload_user_profile_picture(request):
-    if request.user.is_authenticated:
+    user = request.user
+    if user.is_authenticated:
         if request.method == 'PUT':
             serializer = ProfilePictureSerializer(data=request.data)
             if serializer.is_valid():
-                data = serializer.save()
-                return data
+                userid = Users_extended.objects.get(user_id=user)
+                data = serializer.save(userid.id)
+                return Response(status = status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response(status=status.HTTP_417_EXPECTATION_FAILED)

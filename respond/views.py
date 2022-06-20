@@ -442,7 +442,7 @@ def get_user_profile_picture(request):
         datas = User.objects.get(username=user)
         data = datas.users_extended
 
-        return Response({'image':str(data.image.url)},status = status.HTTP_200_OK)
+        return Response(data.image.url,status = status.HTTP_200_OK)
 
     else:
         return Response(status=status.HTTP_401_UNAUTHORIZED)

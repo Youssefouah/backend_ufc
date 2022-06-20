@@ -271,7 +271,7 @@ class UpdateSocialserialiser(serializers.ModelSerializer):
 
 class ProfilePictureSerializer(serializers.ModelSerializer):
 	#id=serializers.CharField(max_length=100)
-	image = serializers.ImageField(max_length=None, use_url=True)
+	image = serializers.FileField(max_length=None, use_url=True)
 	class Meta:
 		model = Users_extended
 		fields = ['image']

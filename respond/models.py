@@ -22,7 +22,7 @@ class Users_extended(models.Model):
     phone = models.CharField(max_length = 24,null = True,blank = True)
     address = models.CharField(max_length = 100,null = True,blank = True)
     job = models.CharField(max_length = 100,null = True,blank = True)
-    image = models.ImageField(upload_to = 'photos',null = True,blank = True)
+    image = models.FileField(upload_to = 'photos',null = True,blank = True)
     created_At = models.DateTimeField(auto_now_add=True,editable = True)
     updated_At = models.DateTimeField(auto_now=True,editable = True)
     def __str__(self):

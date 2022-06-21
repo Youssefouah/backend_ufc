@@ -284,7 +284,7 @@ class ProfilePictureSerializer(serializers.ModelSerializer):
 		# format, imgstr = image.split(';base64,') 
 		# ext = format.split('/')[-1] 
 		name,ext = image.name.split('.')
-		print(ext)
+		#print(ext)
 		user = Users_extended.objects.get(id=userid)
 		# your_file = ContentFile(base64.b64decode(image),name=user.userd_id.username+'.'+ext)
 		if user.image:

@@ -283,10 +283,13 @@ class ProfilePictureSerializer(serializers.ModelSerializer):
 		image = self.validated_data['image']
 		# format, imgstr = image.split(';base64,') 
 		# ext = format.split('/')[-1] 
+		name,ext = image.name.split('.')
+		print(ext)
 		user = Users_extended.objects.get(id=userid)
 		# your_file = ContentFile(base64.b64decode(image),name=user.userd_id.username+'.'+ext)
 		if user.image:
 			user.image.delete()		
+		image.name = user.user_id.username+'.'+ext	
 		user.image = image
 		
 		user.save()

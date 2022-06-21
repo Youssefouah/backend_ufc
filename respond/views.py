@@ -420,8 +420,8 @@ def get_all_url_profiles(request):
 @api_view(['PUT'])
 @authentication_classes((TokenAuthentication,))
 def upload_user_profile_picture(request):
-    user = request.user
-    if user.is_authenticated:
+        user = request.user
+   # if user.is_authenticated:
         if request.method == 'PUT':
             serializer = ProfilePictureSerializer(data=request.data)
             if serializer.is_valid():
@@ -431,8 +431,8 @@ def upload_user_profile_picture(request):
             else:
                 return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response(status=status.HTTP_417_EXPECTATION_FAILED)
-    else:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)    
+   # else:
+     #   return Response(status=status.HTTP_401_UNAUTHORIZED)    
 
 
 

@@ -1,6 +1,7 @@
 import base64
 import code
-from dataclasses import field
+from drf_extra_fields.fields import Base64ImageField
+from dataclasses import field, fields
 from unittest.util import _MAX_LENGTH
 from rest_framework import serializers
 from .models import *
@@ -271,7 +272,7 @@ class UpdateSocialserialiser(serializers.ModelSerializer):
 
 class ProfilePictureSerializer(serializers.ModelSerializer):
 	#id=serializers.CharField(max_length=100)
-	image = serializers.FileField(max_length=None, use_url=True)
+	image = Base64ImageField(max_length=None, use_url=True)
 	class Meta:
 		model = Users_extended
 		fields = ['image']
@@ -280,13 +281,17 @@ class ProfilePictureSerializer(serializers.ModelSerializer):
 		#userid =self.validated_data['id
 		#userid =self.validated_data['id
 		image = self.validated_data['image']
+		# format, imgstr = image.split(';base64,') 
+		# ext = format.split('/')[-1] 
 		user = Users_extended.objects.get(id=userid)
-		your_file = base64.b64decode(image)
+		# your_file = ContentFile(base64.b64decode(image),name=user.userd_id.username+'.'+ext)
 		if user.image:
-			user.image.delete()	
-		user.image = your_file
+			user.image.delete()		
+		user.image = image
+		
 		user.save()
 		return Response(status=status.HTTP_200_OK)
+
 		
 
 

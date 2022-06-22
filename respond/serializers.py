@@ -11,7 +11,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.core.mail import send_mail  
 #from django.contrib.auth.hashers import check_password
-from .signale import Signal_code
 import random
 from django.core.files.base import ContentFile
 

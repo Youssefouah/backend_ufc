@@ -1,5 +1,4 @@
-var _Urgent =
-    'please specify the directory where the user profile pictures are stored in';
+
 /// TODO: please specify the routes for reset password
 
 

@@ -30,7 +30,6 @@ class Users_extended(models.Model):
 
 #table for urls every user has
 class urlOption(models.Model):
-
     id = models.UUIDField(primary_key=True,auto_created=True,default=uuid.uuid4, editable=False)
     urlOptionName = models.CharField(max_length=100)
     urlOptionUrl = models.URLField(blank = True)
@@ -38,8 +37,6 @@ class urlOption(models.Model):
     svg_logo = models.FileField(upload_to = 'logos',null = True,blank = True)
     logo_url = models.CharField(max_length=100,null = True,blank = True)
     hint = models.CharField(max_length=100,null = True,blank = True)
-    
-
     def __str__(self):
         return str(self.id)
 

@@ -26,18 +26,38 @@ def get_user_by_token(id):
         return False
 #show in template 
 
-def getlinks_with_image(user):
+def getlinks_with_image(id_hash):
+    user = User.objects.get(username = id_hash)
+    datas = {}
     try:
-        data = social_profile.objects.all().filter(userurl_id=user)
-        return data
+        data = social_profile.objects.filter(userurl_id=user)
+        for i in data:
+            option = urlOption.objects.get(id = str(i.urlOptionId))
+            url = option.urlOptionUrl
+            urls = str(url)+'/'+str(i.socialProfileUsername)
+            datas[urls] = option.urlOptionName
+        return datas    
     except:
         return None
+
+
+def get_colors():
+    datas = {}
+    try:
+        data = urlOption.objects.all()
+        for i in data:
+            datas[str(i.urlOptionName)] = str(i.urlOptionColor)
+        return datas
+    except:
+        return None
+
 def respond(request,board_id):
     data_extend = Users_extended.objects.get(id=board_id)
     id_hash = data_extend.user_id
     data = User.objects.get(username = id_hash)
-    socials = get_social_profile(id_hash)
-    return render(request,"responder/index.html",{'data':data,'data_extend':data_extend})
+    socials =getlinks_with_image(id_hash)
+    colors = get_colors()
+    return render(request,"responder/index.html",{'data':data,'data_extend':data_extend,'socials':socials,'colors':colors})
 
 #function for return db inside social_profile    
 def get_datathe_user(data,data_user):

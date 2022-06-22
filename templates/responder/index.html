@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css'%}">
     <style>
         a{
-            padding: 15px;
+            padding: 20px;
             margin: 5px 2px;
             border-radius: 50%;
         }
@@ -30,108 +30,108 @@
         }
         
         .fa-facebook {
-          background: #3B5998;
+          background: {{colors.facebook}};
           color: white;
         }
         
         .fa-twitter {
-          background: #55ACEE;
+          background: {{colors.twitter}};
           color: white;
         }
         
         .fa-google {
-          background: #dd4b39;
+          background: {{colors.google}};
           color: white;
         }
         
         .fa-linkedin {
-          background: #007bb5;
+          background: {{colors.linkedin}};
           color: white;
         }
         
         .fa-youtube {
-          background: #bb0000;
+          background: {{colors.youtube}};
           color: white;
         }
         
         .fa-instagram {
-          background: #125688;
+          background: {{collors.instagram}};
           color: white;
         }
         
         .fa-pinterest {
-          background: #cb2027;
+          background: {{colors.pinterest}};
           color: white;
         }
         
         .fa-snapchat-ghost {
-          background: #fffc00;
+          background: {{colors.snapchat}};
           color: white;
           text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
         }
         
         .fa-skype {
-          background: #00aff0;
+          background: {{colors.skype}};
           color: white;
         }
         
         .fa-android {
-          background: #a4c639;
+          background: {{colors.android}};
           color: white;
         }
         
         .fa-dribbble {
-          background: #ea4c89;
+          background: {{colors.dribbble}};
           color: white;
         }
         
         .fa-vimeo {
-          background: #45bbff;
+          background: {{colors.vimeo}};
           color: white;
         }
         
         .fa-tumblr {
-          background: #2c4762;
+          background: {{colors.tumblr}};
           color: white;
         }
         
         .fa-vine {
-          background: #00b489;
+          background: {{colors.vine}};
           color: white;
         }
         
         .fa-foursquare {
-          background: #45bbff;
+          background: {{colors.foursquare}};
           color: white;
         }
         
         .fa-stumbleupon {
-          background: #eb4924;
+          background: {{colors.stumbleupon}};
           color: white;
         }
         
         .fa-flickr {
-          background: #f40083;
+          background: {{colors.flickr}};
           color: white;
         }
         
         .fa-yahoo {
-          background: #430297;
+          background: {{colors.yahoo}};
           color: white;
         }
         
         .fa-soundcloud {
-          background: #ff5500;
+          background: {{colors.soundcloud}};
           color: white;
         }
         
         .fa-reddit {
-          background: #ff5700;
+          background: {{colors.reddit}};
           color: white;
         }
         
         .fa-rss {
-          background: #ff6600;
+          background: {{colors.rss}};
           color: white;
         }
         </style>
@@ -154,11 +154,11 @@
                             <p class="mb-2"><i class="fa fa-envelope mr-2"></i> {{data.email}}</p>
                             <p class="mb-2"><i class="fa fa-phone mr-2"></i> {{data_extend.phone}}</p>
                         </div>
-                            {%for key,link in data.users.links.items%}
+                            {%for link,key in socials.items%}
                                    
                             {%if forloop.counter0  == 0  %} 
                                  <div class=" d-flex justify-content-start">
-                                    <a href="https:/{{link}}" class="fa fa-{{key}} mr-3"></a>
+                                    <a href={{link}} class="fa fa-{{key}} mr-3"></a>
 
                             {%elif forloop.counter0  == 4 or forloop.counter0  == 8 %}
                                  </div>

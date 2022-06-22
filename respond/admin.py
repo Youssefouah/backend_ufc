@@ -9,7 +9,7 @@ class Users_extendAdmin(admin.ModelAdmin):
 
 class Social_optionAdmin(admin.ModelAdmin):
     # a list of displayed columns name.
-    list_display = ['id','urlOptionName','urlOptionUrl','urlOptionColor','svg_logo','logo_url']
+    list_display = ['id','urlOptionName','urlOptionUrl','urlOptionColor','svg_logo','logo_url','hint']
 
 class Social_urlAdmin(admin.ModelAdmin):
     # a list of displayed columns name.

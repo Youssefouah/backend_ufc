@@ -25,10 +25,18 @@ def get_user_by_token(id):
     except:
         return False
 #show in template 
+
+def getlinks_with_image(user):
+    try:
+        data = social_profile.objects.all().filter(userurl_id=user)
+        return data
+    except:
+        return None
 def respond(request,board_id):
     data_extend = Users_extended.objects.get(id=board_id)
     id_hash = data_extend.user_id
     data = User.objects.get(username = id_hash)
+    socials = get_social_profile(id_hash)
     return render(request,"responder/index.html",{'data':data,'data_extend':data_extend})
 
 #function for return db inside social_profile    
@@ -386,7 +394,8 @@ def get_link_options(request):
                     'urlOptionUrl':str(i.urlOptionUrl),
                     'urlOptionColor':str(i.urlOptionColor),
                     'svg_logo':str(i.svg_logo),
-                    'logo_url':str(i.logo_url)}   
+                    'logo_url':str(i.logo_url)
+                    ,'hint':str(i.hint)} 
                 data_all.append(datas)
             return Response(data_all,status = status.HTTP_200_OK) 
         else:

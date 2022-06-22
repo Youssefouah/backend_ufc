@@ -154,19 +154,19 @@
                             <p class="mb-2"><i class="fa fa-envelope mr-2"></i> {{data.email}}</p>
                             <p class="mb-2"><i class="fa fa-phone mr-2"></i> {{data_extend.phone}}</p>
                         </div>
-                            {%for key,img in data.users.links.items%}
+                            {%for key,link in data.users.links.items%}
                                    
                             {%if forloop.counter0  == 0  %} 
                                  <div class=" d-flex justify-content-start">
-                                    <a href="https:/{{img}}" class="fa fa-{{key}} mr-3"></a>
+                                    <a href="https:/{{link}}" class="fa fa-{{key}} mr-3"></a>
 
                             {%elif forloop.counter0  == 4 or forloop.counter0  == 8 %}
                                  </div>
                                  <div class=" d-flex justify-content-start">
-                                    <a href="https:/{{img}}" class="fa fa-{{key}} mr-3"></a>
+                                    <a href="https:/{{link}}" class="fa fa-{{key}} mr-3"></a>
                  
                            {%else  %} 
-                                  <a href="https:/{{img}}" class="fa fa-{{key}} mr-3"></a>
+                                  <a href="https:/{{link}}" class="fa fa-{{key}} mr-3"></a>
                            {% endif %}
 
                            {% endfor %}

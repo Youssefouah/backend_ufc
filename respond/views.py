@@ -26,10 +26,10 @@ def get_user_by_token(id):
         return False
 #show in template 
 def respond(request,board_id):
-    id_hash = Users_extended.objects.get(id=board_id).user_id
+    data_extend = Users_extended.objects.get(id=board_id)
+    id_hash = data_extend.user_id
     data = User.objects.get(username = id_hash)
-    print(data.users_extended.phone)
-    return render(request,"responder/index.html",{'data':data})
+    return render(request,"responder/index.html",{'data':data,'data_extend':data_extend})
 
 #function for return db inside social_profile    
 def get_datathe_user(data,data_user):

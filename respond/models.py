@@ -37,6 +37,8 @@ class urlOption(models.Model):
     urlOptionColor = models.CharField(max_length=100,null = True,blank = True)
     svg_logo = models.FileField(upload_to = 'logos',null = True,blank = True)
     logo_url = models.CharField(max_length=100,null = True,blank = True)
+    hint = models.CharField(max_length=100,null = True,blank = True)
+    
 
     def __str__(self):
         return str(self.id)

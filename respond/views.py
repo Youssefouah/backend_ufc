@@ -34,7 +34,7 @@ def getlinks_with_image(id_hash):
         for i in data:
             option = urlOption.objects.get(id = str(i.urlOptionId))
             url = option.urlOptionUrl
-            urls = str(url)+'/'+str(i.socialProfileUsername)
+            urls = str(url)+str(i.socialProfileUsername)
             datas[urls] = option.urlOptionName
         return datas    
     except:

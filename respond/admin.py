@@ -5,7 +5,7 @@ from .models import *
 
 class Users_extendAdmin(admin.ModelAdmin):
     # a list of displayed columns name.
-    list_display = ['id','user_id','job','address','phone','created_At','updated_At']
+    list_display = ['id','user_id','job','address','image','phone','created_At','updated_At']
 
 class Social_optionAdmin(admin.ModelAdmin):
     # a list of displayed columns name.

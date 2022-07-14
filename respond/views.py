@@ -26,19 +26,24 @@ def get_user_by_token(id):
         return False
 #show in template 
 
+
+#get data in table urloptions
 def getlinks_with_image(id_hash):
     user = User.objects.get(username = id_hash)
     datas = {}
+    ls = []
     try:
         data = social_profile.objects.filter(userurl_id=user)
         for i in data:
             option = urlOption.objects.get(id = str(i.urlOptionId))
             url = option.urlOptionUrl
             urls = str(url)+str(i.socialProfileUsername)
-            datas[urls] = option.urlOptionName
+            ls.append(option.svg_logo)
+            ls.append(option.urlOptionColor)
+            datas[urls] = ls
         return datas    
     except:
-        return None
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 def get_colors():
@@ -56,8 +61,10 @@ def respond(request,board_id):
     id_hash = data_extend.user_id
     data = User.objects.get(username = id_hash)
     socials =getlinks_with_image(id_hash)
-    colors = get_colors()
-    return render(request,"responder/index.html",{'data':data,'data_extend':data_extend,'socials':socials,'colors':colors})
+    #colors = get_colors()
+    print(socials)
+    print('------------------')
+    return render(request,"responder/index.html",{'data':data,'data_extend':data_extend,'socials':socials})
 
 #function for return db inside social_profile    
 def get_datathe_user(data,data_user):
